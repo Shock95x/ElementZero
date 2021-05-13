@@ -44,7 +44,7 @@ public:
   MCAPI class Dimension *getDimension(class AutomaticID<class Dimension, int>) const;
   MCAPI std::string const &getPlayerXUID(class mce::UUID const &) const;
   MCAPI std::string const &getPlayerPlatformOnlineId(class mce::UUID const &) const;
-  BASEAPI ActorUniqueID getNewUniqueID() const;
+  MCAPI virtual ActorUniqueID getNewUniqueID();
   BASEAPI PacketSender &getPacketSender() const;
   BASEAPI uint64_t GetServerTick();
   BASEAPI LevelDataWrapper &GetLevelDataWrapper();
@@ -52,10 +52,8 @@ public:
   MCAPI void setDefaultGameType(enum GameType);
 
   MCAPI bool hasCommandsEnabled(void) const;
-  MCAPI bool hasExperimentalGameplayEnabled(void) const;
-
-  MCAPI void forEachPlayer(std::function<bool(Player &)>);
-  MCAPI void forEachPlayer(std::function<bool(Player const &)>) const;
+  MCAPI virtual void forEachPlayer(std::function<bool(Player &)>);
+  MCAPI virtual void forEachPlayer(std::function<bool(Player const &)>) const;
   MCAPI void forEachDimension(std::function<bool(Dimension const &)>);
 
   MCAPI void broadcastBossEvent(enum BossEventUpdateType);
@@ -88,7 +86,7 @@ public:
   MCAPI void removeListener(class LevelListener &);
   MCAPI struct ActorUniqueID expandMapByID(struct ActorUniqueID, bool);
   MCAPI void potionSplash(class Vec3 const &, class Color const &, bool);
-  MCAPI class Actor *fetchEntity(struct ActorUniqueID, bool) const;
+  MCAPI virtual class Actor *fetchEntity(struct ActorUniqueID, bool) const;
   MCAPI void unregisterTemporaryPointer(class _TickPtr &);
   MCAPI bool destroyBlock(class BlockSource &, class BlockPos const &, bool);
   MCAPI bool extinguishFire(class BlockSource &, class BlockPos const &, unsigned char);

@@ -46,15 +46,15 @@ declare interface OfflinePlayerEntry {
   toString(): string;
 }
 
-declare module "ez:entity" {
+/*declare module "ez:entity" {
   export function fromVanilla(vanilla: VanillaEntity): PlayerEntry | null;
-}
+}*/
 
 declare module "ez:player" {
   export function getPlayerByXUID(xuid: string): PlayerEntry | null;
   export function getPlayerByUUID(uuid: string): PlayerEntry | null;
   export function getPlayerByNAME(name: string): PlayerEntry | null;
-  export function getPlayerFromVanilla(vanilla: VanillaEntity): PlayerEntry | null;
+  // export function getPlayerFromVanilla(vanilla: VanillaEntity): PlayerEntry | null;
 
   export function getOfflinePlayerByXUID(xuid: string): OfflinePlayerEntry | null;
   export function getOfflinePlayerByUUID(uuid: string): OfflinePlayerEntry | null;

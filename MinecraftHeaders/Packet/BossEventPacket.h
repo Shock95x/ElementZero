@@ -22,8 +22,8 @@ enum class BossEventUpdateType {
 
 class BossEventPacket : public Packet {
 public:
-  int unk_val_1 = 1;
-  int unk_val_2 = 2;
+  int FLAG_DARKEN = 1;
+  int FLAG_FOG = 2;
   ActorUniqueID owner, player;
   BossEventUpdateType type;
   std::string name;
@@ -35,13 +35,17 @@ public:
   MCAPI virtual MinecraftPacketIds getId() const;
   MCAPI virtual std::string getName() const;
   MCAPI virtual void write(BinaryStream &) const;
-  MCAPI virtual StreamReadResult read(ReadOnlyBinaryStream &);
+
+  private:
+    MCAPI virtual StreamReadResult _read(ReadOnlyBinaryStream &);
 };
 
-static_assert(offsetof(BossEventPacket, owner) == 48);
-static_assert(offsetof(BossEventPacket, name) == 72);
-static_assert(offsetof(BossEventPacket, percent) == 104);
-static_assert(offsetof(BossEventPacket, color) == 108);
-static_assert(offsetof(BossEventPacket, overlay) == 112);
-static_assert(offsetof(BossEventPacket, darken_sky) == 116);
-static_assert(offsetof(BossEventPacket, fog) == 117);
+static_assert(offsetof(BossEventPacket, owner) == 56);
+static_assert(offsetof(BossEventPacket, player) == 64);
+static_assert(offsetof(BossEventPacket, type) == 72);
+static_assert(offsetof(BossEventPacket, name) == 80);
+static_assert(offsetof(BossEventPacket, percent) == 112);
+static_assert(offsetof(BossEventPacket, color) == 116);
+static_assert(offsetof(BossEventPacket, overlay) == 120);
+static_assert(offsetof(BossEventPacket, darken_sky) == 124);
+static_assert(offsetof(BossEventPacket, fog) == 125);

@@ -73,11 +73,11 @@ static inline void trim(std::string &s) {
 void PreInit() {
   VTableHook::Create<&BlockLegacy::isInteractiveBlock>("??_7SignBlock@@6B@")
       ->Replace(
-          "?isInteractiveBlock@BlockLegacy@@UEBA_NXZ", +[](void *) { return true; });
+          "?isInteractiveBlock@BlockLegacy@@MEBA_NXZ", +[](void *) { return true; });
   VTableHook::Create<&BlockLegacy::use>("??_7SignBlock@@6B@")
       ->Replace(
-          "?use@BlockLegacy@@UEBA_NAEAVPlayer@@AEBVBlockPos@@@Z",
-          +[](BlockLegacy *self, class Player &player, const class BlockPos &pos) {
+          "?use@BlockLegacy@@MEBA_NAEAVPlayer@@AEBVBlockPos@@E@Z",
+          +[](BlockLegacy *self, class Player &player, const class BlockPos &pos, uint8_t a1) {
             if (auto ba = player.Region.getBlockEntity(pos))
               if (auto me = dynamic_cast<MySignBlockActor *>(ba)) {
                 if (player.canUseOperatorBlocks()) {

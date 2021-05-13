@@ -1,9 +1,6 @@
 #include <Net/NetworkIdentifier.h>
 #include <Packet/MobEquipmentPacket.h>
-#include <Packet/ActorFallPacket.h>
 #include <Packet/TextPacket.h>
-#include <Item/ItemStack.h>
-#include <Item/Potion.h>
 #include <Item/ItemDescriptor.h>
 #include <Item/Item.h>
 
@@ -44,24 +41,10 @@ TClasslessInstanceHook(
     if (it->player->canUseOperatorBlocks()) {
       original(this, netid, packet);
     } else {
-      LOGI("\"%s\"(%d) has been detected using: structure block exploit") % it->name % it->xuid;
+      LOGI("\"%s\"(%d) has been detected using: Structure block exploit") % it->name % it->xuid;
       (mAntiCheat.*EmitDetected)(SIG("detected"), "edit_block", *it);
     }
   }
-}
-
-TClasslessInstanceHook(
-    void, "?handle@ServerNetworkHandler@@UEAAXAEBVNetworkIdentifier@@AEBVActorFallPacket@@@Z", NetworkIdentifier *netid,
-    ActorFallPacket *packet) {
-  if (packet->fallDistance < 0.1) {
-    auto &db = Mod::PlayerDatabase::GetInstance();
-    auto it  = db.Find(*netid);
-    if (!it) return;
-    LOGI("\"%s\"(%d) has been detected using: No fall") % it->name % it->xuid;
-    (mAntiCheat.*EmitDetected)(SIG("detected"), "nofall", *it);
-    packet->inVoid = true;
-  }
-  original(this, netid, packet);
 }
 
 TClasslessInstanceHook(
@@ -71,12 +54,12 @@ TClasslessInstanceHook(
   auto it  = db.Find(*netid);
   if (!it) return;
   if (packet->type != TextPacketType::Chat) {
-    LOGI("\"%s\"(%d) has been detected using: chat hack") % it->name % it->xuid;
+    LOGI("\"%s\"(%d) has been detected using: Chat hack") % it->name % it->xuid;
     (mAntiCheat.*EmitDetected)(SIG("detected"), "chat_hack", *it);
     return;
   }
   if (packet->source != it->name) {
-    LOGI("\"%s\"(%d) has been detected using: fake name") % it->name % it->xuid;
+    LOGI("\"%s\"(%d) has been detected using: Fake name") % it->name % it->xuid;
     (mAntiCheat.*EmitDetected)(SIG("detected"), "fake_name", *it);
     return;
   }

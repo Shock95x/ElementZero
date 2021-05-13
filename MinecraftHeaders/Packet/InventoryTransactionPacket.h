@@ -9,13 +9,14 @@
 #include "../Core/Packet.h"
 #include "../Core/ContainerID.h"
 #include "../Container/ContainerEnumName.h"
-#include "../Math/NetworkBlockPosition.h"
 #include "../Math/BlockFace.h"
 #include "../Actor/Player.h"
 #include "../Actor/ActorRuntimeID.h"
 #include "../Item/ItemStack.h"
 #include "../Item/SimpleClientNetId.h"
+#include "../Item/NetworkItemStackDescriptor.h"
 #include "../dll.h"
+
 
 class ReadOnlyBinaryStream;
 class BinaryStream;
@@ -23,7 +24,9 @@ class ItemStack;
 class CompoundTag;
 
 enum class InventoryTransactionError {
-  Unexcepted = 7,
+    BalanceMismatch = 2,
+    SourceItemMismatch = 3,
+    Unexcepted = 7,
 };
 
 enum class InventorySourceType {
@@ -101,9 +104,7 @@ public:
   MCAPI InventoryTransactionError executeFull(Player &, bool) const;
   MCAPI void forceBalanceTransaction();
   MCAPI std::vector<InventoryAction> const &getActions(InventorySource const &) const;
-  MCAPI
-  std::function<InventoryTransactionError(Player &, InventoryAction const &, bool)>
-  getVerifyFunction(InventorySource const &) const;
+  MCAPI std::function<InventoryTransactionError(Player &, InventoryAction const &, bool)> getVerifyFunction(InventorySource const &) const;
   MCAPI InventoryTransactionError verifyFull(Player &, bool) const;
 
 private:
@@ -138,16 +139,16 @@ public:
   MCAPI virtual void onTransactionError(Player &, InventoryTransactionError) const;
 };
 
-static_assert(sizeof(ComplexInventoryTransaction) == 104);
+//static_assert(sizeof(ComplexInventoryTransaction) == 104);
 
 class ItemUseInventoryTransaction : public ComplexInventoryTransaction {
 public:
   enum class Type { USE_ITEM_ON, USE_ITEM, DESTROY } actionType;
-  NetworkBlockPosition pos;
+  BlockPos pos;
   uint32_t block_runtime_id;
   BlockFace face;
   uint32_t slot;
-  ItemStack itemInHand;
+  NetworkItemStackDescriptor itemInHand;
   Vec3 playerPos, clickPos;
 
   inline virtual ~ItemUseInventoryTransaction() {}
@@ -155,19 +156,22 @@ public:
   MCAPI virtual void write(BinaryStream &) const;
   MCAPI virtual InventoryTransactionError handle(Player &, bool) const;
   MCAPI virtual void onTransactionError(Player &, InventoryTransactionError) const;
+
+  MCAPI void resendBlocksAroundArea(Player &, BlockPos const &, unsigned char) const;
 };
 
 static_assert(offsetof(ItemUseInventoryTransaction, itemInHand) == 136);
-static_assert(offsetof(ItemUseInventoryTransaction, playerPos) == 280);
-static_assert(offsetof(ItemUseInventoryTransaction, clickPos) == 292);
-static_assert(sizeof(ItemUseInventoryTransaction) == 304);
+static_assert(offsetof(ItemUseInventoryTransaction, playerPos) == 264);
+static_assert(offsetof(ItemUseInventoryTransaction, clickPos) == 276);
+
+static_assert(sizeof(ItemUseInventoryTransaction) == 288);
 
 class ItemUseOnActorInventoryTransaction : public ComplexInventoryTransaction {
 public:
   ActorRuntimeID actorId;
   int actionType;
   uint32_t slot;
-  ItemStack itemInHand;
+  NetworkItemStackDescriptor itemInHand;
   Vec3 playerPos, clickPos;
 
   inline virtual ~ItemUseOnActorInventoryTransaction() {}
@@ -177,14 +181,14 @@ public:
   MCAPI virtual void onTransactionError(Player &, InventoryTransactionError) const;
 };
 
-static_assert(offsetof(ItemUseOnActorInventoryTransaction, playerPos) == 264);
-static_assert(offsetof(ItemUseOnActorInventoryTransaction, clickPos) == 276);
+static_assert(offsetof(ItemUseOnActorInventoryTransaction, playerPos) == 248);
+static_assert(offsetof(ItemUseOnActorInventoryTransaction, clickPos) == 260);
 
 class ItemReleaseInventoryTransaction : public ComplexInventoryTransaction {
 public:
   int actionType;
   uint32_t slot;
-  ItemStack itemInHand;
+  NetworkItemStackDescriptor itemInHand;
   Vec3 playerPos;
 
   inline virtual ~ItemReleaseInventoryTransaction() {}
@@ -194,7 +198,7 @@ public:
   MCAPI virtual void onTransactionError(Player &, InventoryTransactionError) const;
 };
 
-static_assert(offsetof(ItemReleaseInventoryTransaction, playerPos) == 256);
+static_assert(offsetof(ItemReleaseInventoryTransaction, playerPos) == 240);
 
 class InventoryTransactionPacket : public Packet {
 public:
@@ -207,8 +211,10 @@ public:
   MCAPI virtual MinecraftPacketIds getId() const;
   MCAPI virtual std::string getName() const;
   MCAPI virtual void write(BinaryStream &) const;
-  MCAPI virtual StreamReadResult read(ReadOnlyBinaryStream &);
+
+  private:
+    MCAPI virtual StreamReadResult _read(ReadOnlyBinaryStream &);
 };
 
-static_assert(offsetof(InventoryTransactionPacket, client_id) == 40);
-static_assert(offsetof(InventoryTransactionPacket, transaction) == 72);
+static_assert(offsetof(InventoryTransactionPacket, client_id) == 48);
+static_assert(offsetof(InventoryTransactionPacket, transaction) == 80);

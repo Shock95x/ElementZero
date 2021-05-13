@@ -42,7 +42,7 @@ JsValueRef EntityBinding::InitProto() {
   return *proto;
 }
 
-static ModuleRegister reg("ez:entity", [](JsObjectWrapper native) -> std::string {
+/*static ModuleRegister reg("ez:entity", [](JsObjectWrapper native) -> std::string {
   native["fromVanilla"] = +[](std::string const &name) {
     auto &engine = *LocateService<MinecraftServerScriptEngine>();
     ScriptApi::ScriptObjectHandle obj;
@@ -57,4 +57,4 @@ static ModuleRegister reg("ez:entity", [](JsObjectWrapper native) -> std::string
   return R"(
     export const fromVanilla = import.meta.native.fromVanilla;
   )";
-});
+});*/

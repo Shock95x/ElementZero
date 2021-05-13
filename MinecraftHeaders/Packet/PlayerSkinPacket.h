@@ -9,13 +9,15 @@ class PlayerSkinPacket : public Packet {
 public:
   mce::UUID uuid;
   SerializedSkin skin;
-  std::string new_name, old_name;
+  std::string new_name, old_name; // 0x230, 0x250
 
   inline ~PlayerSkinPacket() {}
   MCAPI virtual MinecraftPacketIds getId() const;
   MCAPI virtual std::string getName() const;
   MCAPI virtual void write(BinaryStream &) const;
-  MCAPI virtual StreamReadResult read(ReadOnlyBinaryStream &);
+
+  private:
+    MCAPI virtual StreamReadResult _read(ReadOnlyBinaryStream &);
 };
 
-static_assert(offsetof(PlayerSkinPacket, new_name) == 0x200);
+static_assert(offsetof(PlayerSkinPacket, new_name) == 560);

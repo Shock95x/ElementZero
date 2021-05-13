@@ -35,165 +35,170 @@ enum class PlayerUISlot;
 
 class Player : public Mob {
 public:
-  class PlayerSpawnPoint {
-  public:
-    inline static BlockPos InvalidSpawnPos = BlockPos::MIN;
-    BlockPos spawn_block = InvalidSpawnPos, spawn_pos = InvalidSpawnPos;
-    AutomaticID<class Dimension, int> dim = VanillaDimensions::Undefined;
+    class PlayerSpawnPoint {
+    public:
+      inline static BlockPos InvalidSpawnPos = BlockPos::MIN;
+      BlockPos spawn_block = InvalidSpawnPos, spawn_pos = InvalidSpawnPos;
+      AutomaticID<class Dimension, int> dim = VanillaDimensions::Undefined;
 
-    inline PlayerSpawnPoint()        = default;
-    inline PlayerSpawnPoint &operator=(PlayerSpawnPoint &&) = default;
-    inline bool hasSpawnPoint() const { return spawn_block != BlockPos::MIN && dim != VanillaDimensions::Undefined; }
-    inline void invalidate() { *this = {}; }
-    inline bool isValid() const { return dim != VanillaDimensions::Undefined; }
-    inline void setSpawnPoint(BlockPos spawn_block, AutomaticID<class Dimension, int> dim, BlockPos spawn_pos) {
-      this->spawn_block = spawn_block;
-      this->spawn_pos   = spawn_pos;
-      this->dim         = dim;
+      inline PlayerSpawnPoint()        = default;
+      inline PlayerSpawnPoint &operator=(PlayerSpawnPoint &&) = default;
+      inline bool hasSpawnPoint() const { return spawn_block != BlockPos::MIN && dim != VanillaDimensions::Undefined; }
+      inline void invalidate() { *this = {}; }
+      inline bool isValid() const { return dim != VanillaDimensions::Undefined; }
+      inline void setSpawnPoint(BlockPos spawn_block, AutomaticID<class Dimension, int> dim, BlockPos spawn_pos) {
+        this->spawn_block = spawn_block;
+        this->spawn_pos   = spawn_pos;
+        this->dim         = dim;
+      }
+      inline void setSpawnPoint(BlockPos spawn_block, AutomaticID<class Dimension, int> dim) {
+        setSpawnPoint(spawn_block, dim, spawn_block);
+      }
+    };
+
+    inline ServerPlayer *asServerPlayer() const noexcept {
+      return const_cast<ServerPlayer *>(reinterpret_cast<ServerPlayer const *>(this));
     }
-    inline void setSpawnPoint(BlockPos spawn_block, AutomaticID<class Dimension, int> dim) {
-      setSpawnPoint(spawn_block, dim, spawn_block);
+
+    MCAPI virtual void prepareRegion(class ChunkSource &);
+    MCAPI virtual void destroyRegion(void);
+    MCAPI virtual void suspendRegion(void);
+    MCAPI virtual void _fireWillChangeDimension(void);
+    MCAPI virtual void _fireDimensionChanged(void);
+    MCAPI virtual void changeDimensionWithCredits(class AutomaticID<class Dimension, int>);
+    MCAPI virtual int tickWorld(struct Tick const &);
+    MCAPI virtual void frameUpdate(class FrameUpdateContextBase &);
+    MCAPI virtual std::vector<class ChunkPos> const &getTickingOffsets(void) const;
+    MCAPI virtual void moveView(void);
+    MCAPI virtual void setName(std::string const &);
+    MCAPI virtual void checkMovementStats(class Vec3 const &);
+    MCAPI virtual class StructureFeature *getCurrentStructureFeature() const;
+    MCAPI virtual bool isAutoJumpEnabled() const;
+    MCAPI virtual void respawn(void);
+    MCAPI virtual void resetRot();
+    MCAPI virtual void resetPos(bool);
+    MCAPI virtual bool isInTrialMode();
+    MCAPI virtual bool hasResource(int);
+    MCAPI virtual void completeUsingItem(void);
+    MCAPI virtual void setPermissions(enum CommandPermissionLevel);
+    MCAPI virtual void startDestroying(void);
+    MCAPI virtual void stopDestroying(void);
+    MCAPI virtual void openPortfolio();
+    MCAPI virtual void openBook(int, bool, int, BlockActor *);
+    MCAPI virtual void openTrading(struct ActorUniqueID const &, bool);
+    MCAPI virtual bool canOpenContainerScreen(void);
+    MCAPI virtual void openChalkboard(class ChalkboardBlockActor *, bool);
+    MCAPI virtual void openNpcInteractScreen(Actor &);
+    MCAPI virtual void openInventory(void);
+    MCAPI virtual void displayChatMessage(std::string const &, std::string const &);
+    MCAPI virtual void displayClientMessage(std::string const &);
+    MCAPI virtual void displayTextObjectMessage(class TextObjectRoot const &);
+    MCAPI virtual void displayTextObjectWhisperMessage(class TextObjectRoot const &, std::string const &, std::string const &);
+    MCAPI virtual void displayWhisperMessage(std::string const &, std::string const &, std::string const &, std::string const &);
+    MCAPI virtual enum BedSleepingResult startSleepInBed(class BlockPos const &);
+    MCAPI virtual void stopSleepInBed(bool, bool);
+    MCAPI virtual bool canStartSleepInBed(void);
+    MCAPI virtual int getSleepTimer(void) const;
+    MCAPI virtual int getPreviousTickSleepTimer(void) const;
+    MCAPI virtual void openSign(BlockPos const &);
+    MCAPI virtual void playEmote(std::string const &);
+    MCAPI virtual bool isLocalPlayer() const;
+    MCAPI virtual bool isHostingPlayer(void) const;
+    MCAPI virtual bool isLoading(void) const;
+    MCAPI virtual bool isPlayerInitialized(void) const;
+    MCAPI virtual void stopLoading();
+    MCAPI virtual void registerTrackedBoss(struct ActorUniqueID);
+    MCAPI virtual void unRegisterTrackedBoss(struct ActorUniqueID);
+    MCAPI virtual void setPlayerGameType(enum GameType);
+    MCAPI virtual void _crit(class Actor &);
+    MCAPI virtual class IMinecraftEventing *getEventing(void) const;
+    MCAPI virtual unsigned char getUserId();
+    MCAPI virtual void sendEventPacket(class EventPacket &) const;
+    MCAPI virtual void addExperience(int);
+    MCAPI virtual void addLevels(int);
+    MCAPI virtual void setContainerData(class IContainerManager &, int, int);
+    MCAPI virtual void slotChanged(
+    MCAPI     class IContainerManager &, class Container &, int, class ItemStack const &, class ItemStack const &, bool);
+    MCAPI virtual void inventoryChanged(class Container &, int, class ItemStack const &, class ItemStack const &, bool);
+    MCAPI virtual void refreshContainer(class IContainerManager &);
+    MCAPI virtual void deleteContainerManager(void);
+    MCAPI virtual void setFieldOfViewModifier(float);
+    MCAPI virtual bool isPositionRelevant(class AutomaticID<class Dimension, int>, class BlockPos const &);
+    MCAPI virtual bool isEntityRelevant(class Actor const &);
+    MCAPI virtual bool isTeacher(void) const;
+    MCAPI virtual void onSuspension(void);
+    MCAPI virtual void onLinkedSlotsChanged(void);
+    MCAPI virtual void startCooldown(class Item const *);
+    MCAPI virtual int getItemCooldownLeft(enum CooldownType) const;
+    MCAPI virtual bool isItemInCooldown(enum CooldownType) const;
+    MCAPI virtual void sendInventoryTransaction(class InventoryTransaction const &) const;
+    MCAPI virtual void sendComplexInventoryTransaction(std::unique_ptr<class ComplexInventoryTransaction>) const;
+    MCAPI virtual class PlayerEventCoordinator &getPlayerEventCoordinator(void);
+    MCAPI virtual class MoveInputHandler *getMoveInputHandler();
+    MCAPI virtual enum InputMode getInputMode(void) const;
+    MCAPI virtual enum ClientPlayMode getPlayMode(void) const;
+    MCAPI virtual void reportMovementTelemetry(enum MovementEventType);
+    MCAPI virtual void onMovePlayerPacketNormal(class Vec3 const &, class Vec2 const &, float);
+
+    MCAPI bool isInRaid(void) const;
+    MCAPI bool isSurvival(void) const;
+    MCAPI bool isInCreativeMode(void) const;
+    MCAPI bool isHiddenFrom(class Mob &) const;
+
+    MCAPI bool canBeSeenOnMap(void) const;
+    MCAPI bool canUseOperatorBlocks(void) const;
+    MCAPI bool canDestroy(class Block const &) const;
+    MCAPI bool canUseAbility(enum AbilitiesIndex) const;
+
+    MCAPI class Agent *getAgent(void) const;
+    MCAPI int getDirection(void) const;
+    MCAPI int getXpNeededForNextLevel(void) const;
+    MCAPI float getDestroySpeed(class Block const &) const;
+    MCAPI float getDestroyProgress(class Block const &) const;
+    MCAPI class ItemStack const &getSelectedItem(void) const;
+    MCAPI enum GameType getPlayerGameType(void) const;
+    MCAPI class ItemStack const &getCurrentActiveShield(void) const;
+    MCAPI class PlayerInventory &getSupplies(void);
+    MCAPI class BlockPos const &getSpawnPosition(void) const;
+    MCAPI unsigned char getClientSubId(void) const;
+
+    MCAPI void updateTeleportDestPos(void);
+    MCAPI void updateInventoryTransactions(void);
+    MCAPI void updateSkin(class SerializedSkin const &, int);
+
+    MCAPI void setAgent(class Agent *);
+    MCAPI void setRespawnPosition(class BlockPos const &, bool);
+    MCAPI void setBedRespawnPosition(class BlockPos const &);
+    MCAPI void setPlayerUIItem(enum PlayerUISlot, class ItemStack const &);
+    MCAPI void setContainerManager(class std::shared_ptr<class IContainerManager>);
+
+    MCAPI void eat(int, float);
+    MCAPI void startUsingItem(class ItemStack const &, int);
+    MCAPI void stopUsingItem(void);
+    MCAPI void releaseUsingItem(void);
+    MCAPI void stopGliding(void);
+    MCAPI void resetPlayerLevel(void);
+    MCAPI void handleJumpEffects(void);
+    MCAPI bool take(class Actor &, int, int);
+    MCAPI void updateTrackedBosses(void);
+    MCAPI void causeFoodExhaustion(float);
+    MCAPI bool checkNeedAutoJump(float, float);
+    MCAPI void clearRespawnPosition(void);
+    MCAPI void recheckSpawnPosition(void);
+
+    MCAPI NetworkIdentifier const & getClientId(void) const;
+
+    inline void sendNetworkPacket(class Packet &pkt) const {
+        (*(void (__fastcall **) (const Player*, Packet&)) (*(__int64 *) this + 3472))(this, pkt);
     }
-  };
-
-  inline ServerPlayer *asServerPlayer() const noexcept {
-    return const_cast<ServerPlayer *>(reinterpret_cast<ServerPlayer const *>(this));
-  }
-
-  virtual void prepareRegion(class ChunkSource &);
-  virtual void destroyRegion(void);
-  virtual void suspendRegion(void);
-  virtual void _fireWillChangeDimension(void);
-  virtual void _fireDimensionChanged(void);
-  virtual void changeDimensionWithCredits(class AutomaticID<class Dimension, int>);
-  virtual int tickWorld(struct Tick const &);
-  virtual void frameUpdate(class FrameUpdateContextBase &);
-  virtual std::vector<class ChunkPos> const &getTickingOffsets(void) const;
-  virtual void moveView(void);
-  virtual void setName(std::string const &);
-  virtual void checkMovementStats(class Vec3 const &);
-  virtual class StructureFeature *getCurrentStructureFeature() const;
-  virtual bool isAutoJumpEnabled() const;
-  virtual void respawn(void);
-  virtual void resetRot();
-  virtual void resetPos(bool);
-  virtual bool isInTrialMode();
-  virtual bool hasResource(int);
-  virtual void completeUsingItem(void);
-  virtual void setPermissions(enum CommandPermissionLevel);
-  virtual void startDestroying(void);
-  virtual void stopDestroying(void);
-  virtual void openPortfolio();
-  virtual void openBook(int, bool, int, BlockActor *);
-  virtual void openTrading(struct ActorUniqueID const &, bool);
-  virtual bool canOpenContainerScreen(void);
-  virtual void openChalkboard(class ChalkboardBlockActor *, bool);
-  virtual void openNpcInteractScreen(Actor &);
-  virtual void openInventory(void);
-  virtual void displayChatMessage(std::string const &, std::string const &);
-  virtual void displayClientMessage(std::string const &);
-  virtual void displayTextObjectMessage(class TextObjectRoot const &);
-  virtual void displayTextObjectWhisperMessage(class TextObjectRoot const &, std::string const &, std::string const &);
-  virtual void
-  displayWhisperMessage(std::string const &, std::string const &, std::string const &, std::string const &);
-  virtual enum BedSleepingResult startSleepInBed(class BlockPos const &);
-  virtual void stopSleepInBed(bool, bool);
-  virtual bool canStartSleepInBed(void);
-  virtual int getSleepTimer(void) const;
-  virtual int getPreviousTickSleepTimer(void) const;
-  virtual void openSign(BlockPos const &);
-  virtual void playEmote(std::string const &);
-  virtual bool isLocalPlayer() const;
-  virtual bool isHostingPlayer(void) const;
-  virtual bool isLoading(void) const;
-  virtual bool isPlayerInitialized(void) const;
-  virtual void stopLoading();
-  virtual void registerTrackedBoss(struct ActorUniqueID);
-  virtual void unRegisterTrackedBoss(struct ActorUniqueID);
-  virtual void setPlayerGameType(enum GameType);
-  virtual void _crit(class Actor &);
-  virtual class IMinecraftEventing *getEventing(void) const;
-  virtual unsigned char getUserId();
-  virtual void sendEventPacket(class EventPacket &) const;
-  virtual void addExperience(int);
-  virtual void addLevels(int);
-  virtual void setContainerData(class IContainerManager &, int, int);
-  virtual void slotChanged(
-      class IContainerManager &, class Container &, int, class ItemStack const &, class ItemStack const &, bool);
-  virtual void inventoryChanged(class Container &, int, class ItemStack const &, class ItemStack const &, bool);
-  virtual void refreshContainer(class IContainerManager &);
-  virtual void deleteContainerManager(void);
-  virtual void setFieldOfViewModifier(float);
-  virtual bool isPositionRelevant(class AutomaticID<class Dimension, int>, class BlockPos const &);
-  virtual bool isEntityRelevant(class Actor const &);
-  virtual bool isTeacher(void) const;
-  virtual void onSuspension(void);
-  virtual void onLinkedSlotsChanged(void);
-  virtual void startCooldown(class Item const *);
-  virtual int getItemCooldownLeft(enum CooldownType) const;
-  virtual bool isItemInCooldown(enum CooldownType) const;
-  virtual void sendInventoryTransaction(class InventoryTransaction const &) const;
-  virtual void sendComplexInventoryTransaction(std::unique_ptr<class ComplexInventoryTransaction>) const;
-  virtual void sendNetworkPacket(class Packet &) const;
-  virtual class PlayerEventCoordinator &getPlayerEventCoordinator(void);
-  virtual class MoveInputHandler *getMoveInputHandler();
-  virtual enum InputMode getInputMode(void) const;
-  virtual enum ClientPlayMode getPlayMode(void) const;
-  virtual void reportMovementTelemetry(enum MovementEventType);
-  virtual void onMovePlayerPacketNormal(class Vec3 const &, class Vec2 const &, float);
-
-  bool isInRaid(void) const;
-  bool isSurvival(void) const;
-  bool isInCreativeMode(void) const;
-  bool isHiddenFrom(class Mob &) const;
-
-  bool canBeSeenOnMap(void) const;
-  bool canUseOperatorBlocks(void) const;
-  bool canDestroy(class Block const &) const;
-  bool canUseAbility(enum AbilitiesIndex) const;
-
-  class Agent *getAgent(void) const;
-  int getDirection(void) const;
-  int getXpNeededForNextLevel(void) const;
-  float getDestroySpeed(class Block const &) const;
-  float getDestroyProgress(class Block const &) const;
-  class ItemStack const &getSelectedItem(void) const;
-  enum GameType getPlayerGameType(void) const;
-  class ItemStack const &getCurrentActiveShield(void) const;
-  class EnderChestContainer *getEnderChestContainer(void);
-
-  void updateTeleportDestPos(void);
-  void updateInventoryTransactions(void);
-  void updateSkin(class SerializedSkin const &, int);
-
-  void setAgent(class Agent *);
-  void setRespawnPosition(class BlockPos const &, bool);
-  void setBedRespawnPosition(class BlockPos const &);
-  void setPlayerUIItem(enum PlayerUISlot, class ItemStack const &);
-  void setContainerManager(class std::shared_ptr<class IContainerManager>);
-
-  void eat(int, float);
-  void startUsingItem(class ItemStack const &, int);
-  void stopUsingItem(void);
-  void releaseUsingItem(void);
-  void stopGliding(void);
-  void resetPlayerLevel(void);
-  void handleJumpEffects(void);
-  bool take(class Actor &, int, int);
-  void updateTrackedBosses(void);
-  void causeFoodExhaustion(float);
-  bool checkNeedAutoJump(float, float);
-  void clearRespawnPosition(void);
-  void recheckSpawnPosition(void);
 
   BUILD_ACCESS_COMPAT(PlayerInventory &, Inventory);
+  BUILD_ACCESS_COMPAT(class EnderChestContainer *, EnderChestContainer);
   BUILD_ACCESS_COMPAT(class Certificate &, Certificate);
   BUILD_ACCESS_COMPAT(class NetworkIdentifier const &, NetworkIdentifier);
-  BUILD_ACCESS_COMPAT(class BlockPos &, SpawnPosition);
   BUILD_ACCESS_COMPAT(std::string &, DeviceId);
   BUILD_ACCESS_COMPAT(std::string &, ClientPlatformId);
   BUILD_ACCESS_COMPAT(std::string &, PlatformOfflineId);
   BUILD_ACCESS_COMPAT(std::string &, ClientPlatformOnlineId);
-  BUILD_ACCESS_COMPAT(unsigned char, ClientSubId);
   BASEAPI void kick();
 };

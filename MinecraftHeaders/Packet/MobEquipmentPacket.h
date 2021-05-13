@@ -1,14 +1,15 @@
 #pragma once
 
+#include "../dll.h"
 #include "../Core/Packet.h"
 #include "../Item/ItemStack.h"
 #include "../Actor/ActorRuntimeID.h"
-#include "../dll.h"
+#include "../Item/NetworkItemStackDescriptor.h"
 
 class MobEquipmentPacket : public Packet {
 public:
   ActorRuntimeID actorId;
-  ItemStack stack;
+  NetworkItemStackDescriptor stack;
   uint32_t inventorySlot = 0;
   uint32_t hotbarSlot = 0;
   bool flag192 = 0;
@@ -21,5 +22,6 @@ public:
   MCAPI virtual MinecraftPacketIds getId() const;
   MCAPI virtual std::string getName() const;
   MCAPI virtual void write(BinaryStream &) const;
-  MCAPI virtual StreamReadResult read(ReadOnlyBinaryStream &);
+  private:
+    MCAPI virtual StreamReadResult _read(ReadOnlyBinaryStream &);
 };

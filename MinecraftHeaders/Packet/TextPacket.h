@@ -22,12 +22,13 @@ enum class TextPacketType : char {
 
 class TextPacket : public Packet {
 public:
-  alignas(8) TextPacketType type;
+  alignas(8) TextPacketType type; // 48
   std::string source, content;
   std::vector<std::string> args;
   bool translated;
   std::string xuid;
-  std::string unknown;
+  std::string unknown; // 184
+
   template <TextPacketType type, bool translated = true>
   static inline TextPacket createTextPacket(std::string content) {
     TextPacket pkt;
@@ -55,21 +56,22 @@ public:
     pkt.xuid       = xuid;
     return pkt;
   }
-  MCAPI static TextPacket createTextObjectMessage(TextObjectRoot const &);
 
-  static inline TextPacket
-  createTranslatedMessageWithParams(std::string const &text, std::initializer_list<std::string> args = {}) {
-    TextObjectRoot root;
-    root.addChild(TextObjectLocalizedTextWithParams::build(text, args));
-    return createTextObjectMessage(root);
+  MCAPI static TextPacket createTranslated(std::string const &text, std::vector<std::string> const &args);
+
+  static inline TextPacket createTranslatedMessageWithParams(std::string const &text, std::initializer_list<std::string> args = {}) {
+      return createTranslated(text, args);
   }
+
   inline TextPacket() {}
   inline ~TextPacket() {}
   MCAPI virtual MinecraftPacketIds getId() const;
   MCAPI virtual std::string getName() const;
   MCAPI virtual void write(BinaryStream &) const;
-  MCAPI virtual StreamReadResult read(ReadOnlyBinaryStream &);
+
+private:
+    MCAPI virtual StreamReadResult _read(ReadOnlyBinaryStream &);
 };
 
-static_assert(offsetof(TextPacket, type) == 40);
-static_assert(offsetof(TextPacket, unknown) == 176);
+static_assert(offsetof(TextPacket, type) == 48);
+static_assert(offsetof(TextPacket, unknown) == 184);

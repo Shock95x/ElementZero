@@ -6,6 +6,7 @@
 #include "../dll.h"
 
 #include <modutils.h>
+#include <Core/HashedString.h>
 
 class Block {
 	
@@ -21,7 +22,8 @@ public:
   MCAPI virtual ~Block();
   MCAPI virtual enum BlockRenderLayer getRenderLayer() const;
 
-  
+
+  MCAPI HashedString const & getName(void) const;
   template <typename T> MCAPI class Block const *setState(class ItemState const &, T) const;
   template <typename T> MCAPI T getState(class ItemState const &) const;
   MCAPI bool isSlabBlock(void) const;

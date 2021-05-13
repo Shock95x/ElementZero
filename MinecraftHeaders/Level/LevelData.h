@@ -23,6 +23,7 @@
 #include <modutils.h>
 
 #include "../dll.h"
+#include "Experiments.h"
 
 struct LevelDataValue : public std::variant<
                             int, bool, float, std::string, GeneratorType, GameType, BlockPos, unsigned int,
@@ -38,7 +39,7 @@ extern MCAPI StringKey LIMITED_WORLD_DEPTH;
 extern MCAPI StringKey LIMITED_WORLD_WIDTH;
 extern MCAPI StringKey LOADED_PLAYER_TAG;
 extern MCAPI StringKey SEED;
-extern MCAPI StringKey SPAWN_POS;
+// extern MCAPI StringKey SPAWN_POS;
 }; // namespace LevelDataKeys
 
 // ref: LevelData::getTagData
@@ -47,6 +48,7 @@ public:
   AdventureSettings mAdventureSettings;
   WorldTemplateLevelData mPremiumTemplate;
   GameRules mGameRules;
+  Experiments mExperiments;
   Abilities mAbilities;
   std::string mName;
   int mStorageVersion;
@@ -116,13 +118,16 @@ public:
   }
   template <typename T> inline void setValue(StringKey const &key, T value) { mKV[key] = LevelDataValue(value); }
 
-  inline BlockPos getSpawnPos() const {
+  MCAPI BlockPos const & getSpawnPos(void) const;
+  MCAPI void setSpawnPos(BlockPos const &);
+
+  /*inline BlockPos getSpawnPos() const {
     if (auto value = extractValue<BlockPos>(LevelDataKeys::SPAWN_POS))
       return *value;
     else
       return BlockPos::ZERO;
   }
-  inline void setSpawnPos(BlockPos const &pos) { setValue(LevelDataKeys::SPAWN_POS, pos); }
+  inline void setSpawnPos(BlockPos const &pos) { setValue(LevelDataKeys::SPAWN_POS, pos); }*/
 
   inline GameType getGameType() const {
     if (auto value = extractValue<::GameType>(LevelDataKeys::GAME_TYPE))
@@ -177,17 +182,18 @@ public:
 };
 
 static_assert(offsetof(LevelData, mGameRules) == 288);
-static_assert(offsetof(LevelData, mAbilities) == 312);
-static_assert(offsetof(LevelData, mName) == 632);
-static_assert(offsetof(LevelData, mGameVersion) == 672);
-static_assert(offsetof(LevelData, mNetworkVersion) == 728);
-static_assert(offsetof(LevelData, mInventoryVersion) == 736);
-static_assert(offsetof(LevelData, mTick) == 848);
-static_assert(offsetof(LevelData, mLimitedWorldOrigin) == 860);
-static_assert(offsetof(LevelData, mDayCycleTime) == 872);
-static_assert(offsetof(LevelData, mServerChunkTickRange) == 888);
-static_assert(offsetof(LevelData, mSingleUseWorld) == 1005);
-static_assert(offsetof(LevelData, mEducationProductId) == 1040);
-static_assert(offsetof(LevelData, mNetherType) == 1079);
-static_assert(offsetof(LevelData, mSpawnSettings) == 1080);
-static_assert(offsetof(LevelData, mKV) == 1128);
+static_assert(offsetof(LevelData, mExperiments) == 312);
+static_assert(offsetof(LevelData, mAbilities) == 352);
+static_assert(offsetof(LevelData, mName) == 672);
+static_assert(offsetof(LevelData, mStorageVersion) == 704);
+static_assert(offsetof(LevelData, mGameVersion) == 712);
+static_assert(offsetof(LevelData, mNetworkVersion) == 768);
+static_assert(offsetof(LevelData, mInventoryVersion) == 776);
+static_assert(offsetof(LevelData, mTick) == 888);
+static_assert(offsetof(LevelData, mLimitedWorldOrigin) == 900);
+static_assert(offsetof(LevelData, mDayCycleTime) == 912);
+static_assert(offsetof(LevelData, mServerChunkTickRange) == 928);
+static_assert(offsetof(LevelData, mSingleUseWorld) == 1045);
+static_assert(offsetof(LevelData, mEducationProductId) == 1080);
+static_assert(offsetof(LevelData, mNetherType) == 1119);
+static_assert(offsetof(LevelData, mSpawnSettings) == 1120);

@@ -29,6 +29,7 @@ public:
         opt->netid.kick(reason);
         if (opt->xuid == 0) {
           Mod::Blacklist::GetInstance().Add(Mod::Blacklist::UUID{opt->uuid, opt->name}, reason, op);
+          Mod::Blacklist::GetInstance().Add(Mod::Blacklist::UUID{opt->uuid, opt->name}, reason, op);
           auto uuid = opt->uuid.asString();
           output.success("commands.ban.success.uuid", {opt->name, uuid});
         } else {

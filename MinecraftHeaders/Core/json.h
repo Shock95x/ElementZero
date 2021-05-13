@@ -227,6 +227,9 @@ public:
   MCAPI Value key() const;
 
 protected:
+  MCAPI void increment(void);
+  MCAPI class Json::Value& deref(void) const;
+
   bool isEqual(const SelfType &other) const {
     if (isNull_) return other.isNull_;
     return current_ == other.current_;
@@ -281,8 +284,15 @@ private:
   explicit ValueIterator(const Value::ObjectValues::iterator &current);
 
 public:
-  MCAPI SelfType &operator++();
-  MCAPI reference operator*() const;
+  SelfType& operator++()  {
+      increment();
+      return *this;
+  }
+
+  Json::Value& operator*()  {
+      return deref();
+  }
+  // MCAPI reference operator*() const;
 };
 
 class Features {

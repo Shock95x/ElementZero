@@ -22,13 +22,15 @@ public:
   MCAPI virtual MinecraftPacketIds getId() const;
   MCAPI virtual std::string getName() const;
   MCAPI virtual void write(BinaryStream &) const;
-  MCAPI virtual StreamReadResult read(ReadOnlyBinaryStream &);
+
+  private:
+    MCAPI virtual StreamReadResult _read(ReadOnlyBinaryStream &);
 };
 
-static_assert(offsetof(CommandBlockUpdatePacket, mode) == 52);
-static_assert(offsetof(CommandBlockUpdatePacket, redstone) == 54);
-static_assert(offsetof(CommandBlockUpdatePacket, conditional) == 55);
-static_assert(offsetof(CommandBlockUpdatePacket, command) == 64);
-static_assert(offsetof(CommandBlockUpdatePacket, delay) == 160);
-static_assert(offsetof(CommandBlockUpdatePacket, track_output) == 164);
-static_assert(offsetof(CommandBlockUpdatePacket, is_block) == 166);
+static_assert(offsetof(CommandBlockUpdatePacket, mode) == 60);
+static_assert(offsetof(CommandBlockUpdatePacket, redstone) == 62);
+static_assert(offsetof(CommandBlockUpdatePacket, conditional) == 63);
+static_assert(offsetof(CommandBlockUpdatePacket, command) == 72);
+static_assert(offsetof(CommandBlockUpdatePacket, delay) == 168);
+static_assert(offsetof(CommandBlockUpdatePacket, track_output) == 172);
+static_assert(offsetof(CommandBlockUpdatePacket, is_block) == 174);

@@ -1,10 +1,7 @@
 #include <functional>
-
 #include <Core/core.h>
 #include <Level/LevelData.h>
-
 #include <hook.h>
-
 #include <base/log.h>
 
 #include "global.h"
@@ -12,33 +9,68 @@
 DEF_LOGGER("Experimental");
 
 THook(bool, "?isBaseCodeBuilderEnabled@EducationOptions@@SA_NXZ") {
-  if (settings.education_feature) return true;
-  return original();
+    if (settings.education_feature) return true;
+    return original();
 }
+
 THook(bool, "?isChemistryEnabled@EducationOptions@@SA_NXZ") {
-  if (settings.education_feature) return true;
-  return original();
+    if (settings.education_feature) return true;
+    return original();
 }
+
 THook(bool, "?isCodeBuilderEnabled@EducationOptions@@SA_NXZ") {
-  if (settings.education_feature) return true;
-  return original();
+    if (settings.education_feature) return true;
+    return original();
 }
+
+TClasslessInstanceHook(bool, "?isEducationEditionLevel@LevelData@@QEBA_NXZ") {
+    if(settings.education_feature) {
+        return true;
+    }
+    return original(this);
+}
+
+THook(bool, "?isEduMode@ConnectionRequest@@QEBA_NXZ", void *self) {
+    if (settings.education_feature) return true;
+    return original(self);
+}
+
+TClasslessInstanceHook(bool, "?DataDrivenBiomes@Experiments@@QEBA_NXZ") {
+    if(settings.force_experiments) {
+        return settings.custom_biomes;
+    }
+    return original(this);
+}
+
+TClasslessInstanceHook(bool, "?DataDrivenItems@Experiments@@QEBA_NXZ") {
+    if(settings.force_experiments) {
+        return settings.holiday_creator_features;
+    }
+    return original(this);
+}
+
+TClasslessInstanceHook(bool, "?Scripting@Experiments@@QEBA_NXZ") {
+    if(settings.force_experiments) {
+        return settings.additional_modding;
+    }
+    return original(this);
+}
+
+TClasslessInstanceHook(bool, "?Gametest@Experiments@@QEBA_NXZ") {
+    if(settings.force_experiments) {
+        return settings.gametest_framework;
+    }
+    return original(this);
+}
+
 TClasslessInstanceHook(bool, "?isEnabled@FeatureToggles@@QEBA_NW4FeatureOptionID@@@Z", int id) {
-  if (settings.force_experimental_gameplay) return true;
-  return original(this, id);
+    if (settings.force_experiments) return true;
+    return original(this, id);
 }
-TClasslessInstanceHook(bool, "?hasExperimentalGameplayEnabled@LevelData@@QEBA_NXZ", int id) {
-  if (settings.force_experimental_gameplay) return true;
-  return original(this, id);
-}
-TClasslessInstanceHook(bool, "?hasExperimentalGameplayEnabled@Level@@QEBA_NXZ", int id) {
-  if (settings.force_experimental_gameplay) return true;
-  return original(this, id);
-}
+
 TClasslessInstanceHook(
     LevelData,
-    "?getLevelData@ExternalFileLevelStorageSource@@UEBA?AVLevelData@@AEBV?$basic_string@DU?$char_traits@D@std@@V?$"
-    "allocator@D@2@@std@@@Z",
+    "?getLevelData@ExternalFileLevelStorageSource@@UEBA?AVLevelData@@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z",
     std::string const &level_name) {
   auto data                                = original(this, level_name);
   data.mEducationFeaturesEnabled           = settings.education_feature;

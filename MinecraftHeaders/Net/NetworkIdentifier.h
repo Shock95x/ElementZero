@@ -25,6 +25,7 @@ public:
   MCAPI bool operator==(NetworkIdentifier const &) const;
   MCAPI uint64_t getHash() const;
   MCAPI std::string getAddress() const;
+  MCAPI std::string toString() const;
 
   BASEAPI RakNet::SystemAddress getRealAddress() const;
   BASEAPI void kick(std::string const &reason) const;

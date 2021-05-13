@@ -72,7 +72,8 @@ static ModuleRegister reg("ez:player", [](JsObjectWrapper native) -> std::string
     if (auto it = db.Find(name); it) return ToJs(*it);
     return GetUndefined();
   };
-  native["getPlayerFromVanilla"] = +[](std::string const &name) {
+
+  /*native["getPlayerFromVanilla"] = +[](std::string const &name) {
     auto &engine = *LocateService<MinecraftServerScriptEngine>();
     ScriptApi::ScriptObjectHandle obj;
     auto binder = ScriptObjectBinder::extract(engine, obj);
@@ -83,7 +84,7 @@ static ModuleRegister reg("ez:player", [](JsObjectWrapper native) -> std::string
     auto &db = Mod::PlayerDatabase::GetInstance();
     if (auto it = db.Find((Player *) ret); it) return ToJs(*it);
     return GetUndefined();
-  };
+  };*/
 
   native["getOfflinePlayerByXUID"] = +[](JsValueRef ref) {
     auto xuid = boost::lexical_cast<uint64_t>(JsToString(ref));

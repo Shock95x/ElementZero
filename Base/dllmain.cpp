@@ -81,12 +81,13 @@ THook(void, "??0RakPeer@RakNet@@QEAA@XZ", RakNet::RakPeer *self) {
 
 static bool stopping = false;
 
-THook(void *, "??R?$default_delete@VConsoleInputReader@@@std@@QEBAXPEAVConsoleInputReader@@@Z", void *self, char *s) {
+
+/* THook(void *, "??R?$default_delete@VConsoleInputReader@@@std@@QEBAXPEAVConsoleInputReader@@@Z", void *self, char *s) {
   auto &thrd = *((std::thread *) (s + 88));
   if (thrd.joinable()) thrd.detach();
   auto ret = original(self, s);
   return ret;
-}
+}*/
 
 static BOOL ConsoleCtrlHandler(DWORD type) {
   DEF_LOGGER("ConsoleCtrlHandler");

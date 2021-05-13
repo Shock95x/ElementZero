@@ -62,15 +62,15 @@ void PreInit() {
 void dllenter() {}
 void dllexit() {}
 
-struct BlacklistEntry {
+struct DenyListEntry {
   mce::UUID uuid;
   std::string xuid, reason;
   int duration;
 };
 
-static_assert(sizeof(BlacklistEntry) == 88);
+static_assert(sizeof(DenyListEntry) == 88);
 
-static bool queryForName(std::string const &name, BlacklistEntry *&it) {
+static bool queryForName(std::string const &name, DenyListEntry *&it) {
   static auto search_name = SQLite::Statement(*database, "SELECT reason FROM name WHERE value == ?");
   search_name.bindNoCopy(1, name);
   BOOST_SCOPE_EXIT_ALL() {
@@ -78,7 +78,7 @@ static bool queryForName(std::string const &name, BlacklistEntry *&it) {
     search_name.clearBindings();
   };
   if (search_name.executeStep()) {
-    static BlacklistEntry cache;
+    static DenyListEntry cache;
     cache.reason = search_name.getColumn(0).getString();
     it           = &cache;
     return true;
@@ -86,7 +86,7 @@ static bool queryForName(std::string const &name, BlacklistEntry *&it) {
   return false;
 }
 
-static bool queryForXUID(int64_t xuid, std::string latest_name, BlacklistEntry *&it) {
+static bool queryForXUID(int64_t xuid, std::string latest_name, DenyListEntry *&it) {
   static auto search_xuid = SQLite::Statement(*database, "SELECT reason, name FROM xuid WHERE value == ?");
   static auto update_name = SQLite::Statement(*database, "UPDATE xuid SET name = ? WHERE value == ?");
   search_xuid.bind(1, xuid);
@@ -95,7 +95,7 @@ static bool queryForXUID(int64_t xuid, std::string latest_name, BlacklistEntry *
     search_xuid.clearBindings();
   };
   if (search_xuid.executeStep()) {
-    static BlacklistEntry cache;
+    static DenyListEntry cache;
     cache.reason   = search_xuid.getColumn(0).getString();
     it             = &cache;
     auto last_name = search_xuid.getColumn(1);
@@ -113,7 +113,7 @@ static bool queryForXUID(int64_t xuid, std::string latest_name, BlacklistEntry *
   return false;
 }
 
-static bool queryForUUID(char const *uuid, std::string latest_name, BlacklistEntry *&it) {
+static bool queryForUUID(char const *uuid, std::string latest_name, DenyListEntry *&it) {
   static auto search_uuid = SQLite::Statement(*database, "SELECT reason, name FROM uuid WHERE value == ?");
   static auto update_name = SQLite::Statement(*database, "UPDATE uuid SET name = ? WHERE value == ?");
   search_uuid.bindNoCopy(1, uuid, sizeof(mce::UUID));
@@ -122,7 +122,7 @@ static bool queryForUUID(char const *uuid, std::string latest_name, BlacklistEnt
     search_uuid.clearBindings();
   };
   if (search_uuid.executeStep()) {
-    static BlacklistEntry cache;
+    static DenyListEntry cache;
     cache.reason   = search_uuid.getColumn(0).getString();
     it             = &cache;
     auto last_name = search_uuid.getColumn(1);
@@ -190,7 +190,7 @@ static void logIpAddress(
 }
 
 static thread_local NetworkIdentifier *context;
-static thread_local std::optional<std::pair<bool, BlacklistEntry *>> cached;
+static thread_local std::optional<std::pair<bool, DenyListEntry *>> cached;
 
 TClasslessInstanceHook(
     void, "?handle@ServerNetworkHandler@@UEAAXAEBVNetworkIdentifier@@AEBVLoginPacket@@@Z", NetworkIdentifier &id,
@@ -201,11 +201,7 @@ TClasslessInstanceHook(
   context = nullptr;
 }
 
-TClasslessInstanceHook(
-    bool,
-    "?isBlocked@Blacklist@@AEBA_NAEBUEntry@1@AEAV?$_Vector_const_iterator@V?$_Vector_val@U?$_Simple_types@UEntry@"
-    "Blacklist@@@std@@@std@@@std@@@Z",
-    BlacklistEntry const &id, BlacklistEntry *&it) {
+TClasslessInstanceHook(bool, "?isBlocked@DenyList@@QEBA_NAEBUEntry@1@@Z", DenyListEntry const &id, DenyListEntry *&it) {
   if (cached) {
     if (cached->first) {
       it = cached->second;

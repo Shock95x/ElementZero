@@ -345,4 +345,5 @@ Lib
 [Bb]uild
 [Dd]ist
 pack
+CustomMods
 compile_commands.json

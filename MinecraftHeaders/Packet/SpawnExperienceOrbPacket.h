@@ -13,8 +13,10 @@ public:
   MCAPI virtual MinecraftPacketIds getId() const;
   MCAPI virtual std::string getName() const;
   MCAPI virtual void write(BinaryStream &) const;
-  MCAPI virtual StreamReadResult read(ReadOnlyBinaryStream &);
+
+  private:
+    MCAPI virtual StreamReadResult _read(ReadOnlyBinaryStream &);
 };
 
-static_assert(offsetof(SpawnExperienceOrbPacket, pos) == 40);
-static_assert(offsetof(SpawnExperienceOrbPacket, amount) == 52);
+static_assert(offsetof(SpawnExperienceOrbPacket, pos) == 48);
+static_assert(offsetof(SpawnExperienceOrbPacket, amount) == 60);

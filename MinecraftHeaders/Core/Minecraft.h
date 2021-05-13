@@ -3,6 +3,7 @@
 #include "../dll.h"
 
 #include <modutils.h>
+#include <Net/NetworkHandler.h>
 
 class Level;
 class ServerNetworkHandler;
@@ -10,7 +11,8 @@ class MinecraftCommands;
 
 class Minecraft {
 public:
-  MCAPI Level *getLevel() const;
-  MCAPI ServerNetworkHandler *getServerNetworkHandler();
-  BASEAPI MinecraftCommands *getCommands();
+    MCAPI Level *getLevel() const;
+    MCAPI NetworkHandler &getNetworkHandler();
+    MCAPI ServerNetworkHandler *getServerNetworkHandler();
+    BASEAPI MinecraftCommands *getCommands();
 };

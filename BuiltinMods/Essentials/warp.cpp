@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "global.h"
+#include "Level/Dimension.h"
 
 void (Mod::Essentials::WarpSystem::*EmitWarp)(
     sigt<"warp"_sig>, Player *, Mod::Essentials::WarpInfo const &, Mod::CallbackToken<std::string> &);
@@ -261,9 +262,9 @@ public:
     }
     switch (action) {
     case Action::Set: {
-      auto dim = ent.player->getDimensionId().value;
+      auto &dim = ent.player->getDimension();
       auto pos = ent.player->getPos();
-      auto err = sys.SetWarp(ent.uuid, {name, false, dim, pos});
+      auto err = sys.SetWarp(ent.uuid, {name, false, dim.DimensionId.value, pos});
       if (err) {
         output.error("commands.warp.error.disallow", {name, *err});
       } else {
@@ -413,9 +414,9 @@ public:
     auto ent = *pent;
     switch (setOrDel) {
     case SetOrDel::set: {
-      auto dim = ent.player->getDimensionId().value;
+      auto &dim = ent.player->getDimension();
       auto pos = ent.player->getPos();
-      sys.SetGlobalWarp({name, true, dim, pos});
+      sys.SetGlobalWarp({name, true, dim.DimensionId.value, pos});
       output.success("commands.warp.success.set", {name, pos});
     } break;
     case SetOrDel::del: {

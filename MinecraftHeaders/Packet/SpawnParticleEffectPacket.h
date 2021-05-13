@@ -17,8 +17,10 @@ public:
   MCAPI virtual MinecraftPacketIds getId() const;
   MCAPI virtual std::string getName() const;
   MCAPI virtual void write(BinaryStream &) const;
-  MCAPI virtual StreamReadResult read(ReadOnlyBinaryStream &);
+
+  private:
+    MCAPI virtual StreamReadResult _read(ReadOnlyBinaryStream &);
 };
 
-static_assert(offsetof(SpawnParticleEffectPacket, dim) == 40);
-static_assert(offsetof(SpawnParticleEffectPacket, id) == 72);
+static_assert(offsetof(SpawnParticleEffectPacket, dim) == 48);
+static_assert(offsetof(SpawnParticleEffectPacket, id) == 80);

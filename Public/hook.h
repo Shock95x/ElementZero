@@ -206,7 +206,7 @@ class SymbolNotFound : std::exception {
   char buffer[4096 + 30];
 
   inline char const *fillBuffer(char const *s) {
-    sprintf_s(buffer, "Failed to found symbol %s", s);
+    sprintf_s(buffer, "Failed to find symbol %s", s);
     return buffer;
   }
 

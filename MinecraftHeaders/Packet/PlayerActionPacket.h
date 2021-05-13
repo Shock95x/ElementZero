@@ -36,17 +36,19 @@ enum class PlayerActionType : unsigned {
 
 class PlayerActionPacket : public Packet {
 public:
-  BlockPos pos;                                 // 40
-  int face              = 0;                    // 52
-  PlayerActionType type = (PlayerActionType) 0; // 56
-  ActorRuntimeID actorId;                       // 64
+  BlockPos pos;
+  int face              = 0;
+  PlayerActionType type = (PlayerActionType) 0;
+  ActorRuntimeID actorId;
 
   inline ~PlayerActionPacket() {}
   MCAPI virtual MinecraftPacketIds getId() const;
   MCAPI virtual std::string getName() const;
   MCAPI virtual void write(BinaryStream &) const;
-  MCAPI virtual StreamReadResult read(ReadOnlyBinaryStream &);
+
+  private:
+    MCAPI virtual StreamReadResult _read(ReadOnlyBinaryStream &);
 };
 
-static_assert(offsetof(PlayerActionPacket, actorId) == 64);
-static_assert(offsetof(PlayerActionPacket, face) == 52);
+static_assert(offsetof(PlayerActionPacket, actorId) == 72);
+static_assert(offsetof(PlayerActionPacket, face) == 60);

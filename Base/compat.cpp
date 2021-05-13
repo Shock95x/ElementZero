@@ -22,36 +22,39 @@ template <typename Holder> struct ValueHolder {
 
 #pragma region Player
 
-// ServerPlayer::handleActorPickRequestOnServer
-SynchedActorData &Actor::getEntityData() const { return direct_access<SynchedActorData>(this, 320); }
 // Actor::Actor
-SimpleContainer &Actor::getEquipmentContainer() const { return direct_access<SimpleContainer>(this, 1400); }
-// Actor::Actor
-SimpleContainer &Actor::getHandContainer() const { return direct_access<SimpleContainer>(this, 1408); }
-// xref to Actor::transferTickingArea
-class Dimension *Actor::getDimension() const {
-  return direct_access<class Dimension *>(this, 808);
-}
-// Player::getSelectedItem
-PlayerInventory &Player::getInventory() const { return *direct_access<PlayerInventory *>(this, 2928); }
+SynchedActorData &Actor::getEntityData() const { return direct_access<SynchedActorData>(this, 352); }
+
+// Actor::getArmorContainer
+SimpleContainer &Actor::getEquipmentContainer() const { return direct_access<SimpleContainer>(this, 1512); }
+
 // Player::Player
-Certificate &Player::getCertificate() const { return *direct_access<class Certificate *>(this, 2736); }
-// Player::setBedRespawnPosition
-BlockPos &Player::getSpawnPosition() const { return direct_access<BlockPos>(this, 7176); }
+class EnderChestContainer *Player::getEnderChestContainer() const {
+    return direct_access<class EnderChestContainer *>(this, 4176);
+}
+
+// Player::getSelectedItem
+PlayerInventory &Player::getInventory() const { return *direct_access<PlayerInventory *>(this, 3040); }
+
+// Player::Player
+Certificate &Player::getCertificate() const { return *direct_access<class Certificate *>(this, 2848); }
+
 // ServerPlayer::ServerPlayer
 NetworkIdentifier const &Player::getNetworkIdentifier() const {
-  return direct_access<class NetworkIdentifier const>(this, 8048);
+  return direct_access<class NetworkIdentifier const>(this, 2544);
 }
 // AddPlayerPacket::AddPlayerPacket
-std::string &Player::getDeviceId() const { return direct_access<std::string>(this, 7872); }
+std::string &Player::getDeviceId() const { return direct_access<std::string>(this, 8088); }
+
 // ServerNetworkHandler::_createNewPlayer
-std::string &Player::getClientPlatformId() const { return direct_access<std::string>(this, 2744); }
+std::string &Player::getClientPlatformId() const { return direct_access<std::string>(this, 2856); }
+
 // ServerNetworkHandler::_createNewPlayer
-std::string &Player::getPlatformOfflineId() const { return direct_access<std::string>(this, 2680); }
-// ServerNetworkHandler::_createNewPlayer
-std::string &Player::getClientPlatformOnlineId() const { return direct_access<std::string>(this, 3528); }
-// RaidBossComponent::_sendBossEvent
-unsigned char Player::getClientSubId() const { return direct_access<unsigned char>(this, 3520); }
+std::string &Player::getPlatformOfflineId() const { return direct_access<std::string>(this, 2792); }
+
+// Player::getPlatformOnlineId
+std::string &Player::getClientPlatformOnlineId() const { return direct_access<std::string>(this, 3672); }
+
 
 #pragma endregion
 
@@ -69,15 +72,11 @@ uint64_t Level::GetServerTick() {
   return CallServerClassMethod<ValueHolder<uint64_t>>("?getCurrentServerTick@Level@@UEBA?BUTick@@XZ", this);
 }
 
-ActorUniqueID Level::getNewUniqueID() const {
-  auto &r = direct_access<uint64_t>(this, 408);
-  return ++r;
-}
-
 // RaidBossComponent::_sendBossEvent
-PacketSender &Level::getPacketSender() const { return *direct_access<PacketSender *>(this, 2096); }
+PacketSender &Level::getPacketSender() const { return *direct_access<PacketSender *>(this, 2336); }
 
-LevelDataWrapper &Level::GetLevelDataWrapper() { return direct_access<LevelDataWrapper>(this, 544); }
+// ServerLevel::initialize
+LevelDataWrapper &Level::GetLevelDataWrapper() { return direct_access<LevelDataWrapper>(this, 576); }
 
 template <> Minecraft *LocateService<Minecraft>() {
   return *GetServerSymbol<Minecraft *>("?mGame@ServerCommand@@1PEAVMinecraft@@EA");
@@ -88,14 +87,15 @@ template <> ServerNetworkHandler *LocateService<ServerNetworkHandler>() {
 }
 
 template <> NetworkHandler *LocateService<NetworkHandler>() {
-  return direct_access<std::unique_ptr<NetworkHandler>>(LocateService<ServerInstance>(), 152).get();
+    return &LocateService<Minecraft>()->getNetworkHandler();
 }
 
 template <> MinecraftCommands *LocateService<MinecraftCommands>() { return LocateService<Minecraft>()->getCommands(); }
 
 MinecraftCommands *Minecraft::getCommands() { return direct_access<MinecraftCommands *>(this, 160); }
 
-bool Item::getAllowOffhand() const { return direct_access<char>(this, 258) & 0x40; }
+// Item::allowOffhand
+bool Item::getAllowOffhand() const { return direct_access<char>(this, 290) & 0x40; }
 
 RakNet::SystemAddress NetworkIdentifier::getRealAddress() const {
   return LocateService<RakNet::RakPeer>()->GetSystemAddressFromGuid(guid);

@@ -68,13 +68,13 @@ private:
   MCAPI bool
   parse(void *, ParseToken const &, CommandOrigin const &, int, std::string &, std::vector<std::string> &) const;
 
-  MCAPI Symbol addEnumValuesInternal(
+  MCAPI Symbol _addEnumValuesInternal(
       std::string const &, std::vector<std::pair<uint64_t, uint64_t>> const &, typeid_t<CommandRegistry>,
       bool (CommandRegistry::*)(
           void *, CommandRegistry::ParseToken const &, CommandOrigin const &, int, std::string &,
           std::vector<std::string> &) const);
 
-  MCAPI Symbol addEnumValuesInternal(
+  MCAPI Symbol _addEnumValuesInternal(
       std::string const &, std::vector<std::pair<std::string, uint64_t>> const &, typeid_t<CommandRegistry>,
       bool (CommandRegistry::*)(
           void *, CommandRegistry::ParseToken const &, CommandOrigin const &, int, std::string &,
@@ -125,7 +125,7 @@ public:
     std::vector<std::pair<std::string, uint64_t>> converted;
     IDConverter converter;
     for (auto &value : values) converted.emplace_back(value.first, converter(value.second));
-    return addEnumValuesInternal(name, converted, tid, &CommandRegistry::parseEnum<Type, IDConverter>).val;
+    return _addEnumValuesInternal(name, converted, tid, &CommandRegistry::parseEnum<Type, IDConverter>).val;
   }
 
   template <typename T> inline static std::unique_ptr<Command> allocateCommand() { return std::make_unique<T>(); }

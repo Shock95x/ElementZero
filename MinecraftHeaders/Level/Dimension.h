@@ -16,7 +16,7 @@ public:
   short unk64;
   std::unique_ptr<class BlockSource> source;
 
-  BUILD_ACCESS(Id, DimensionId, 192);
+  BUILD_ACCESS(Id, DimensionId, 216);
 
   virtual ~Dimension();
   virtual void init(void);

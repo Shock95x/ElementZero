@@ -23,14 +23,12 @@ public:
 
   MCAPI SystemAddress &operator=(SystemAddress const &);
   MCAPI bool operator==(SystemAddress const &) const;
-
-private:
-  MCAPI void ToString_New(bool writePort, char *dest, char portDelineator) const;
+  MCAPI void ToString(bool writePort, char *dest, char portDelineator) const;
 
 public:
   inline std::string ToString(bool withPort = true) {
     char buffer[256];
-    ToString_New(withPort, buffer, '|');
+    ToString(withPort, buffer, '|');
     return {buffer};
   }
 };

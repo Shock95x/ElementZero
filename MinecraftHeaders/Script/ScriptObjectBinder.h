@@ -21,7 +21,6 @@ public:
 
   inline ScriptObjectBinder(std::string type) : type(type) {}
 
-  static MCAPI std::unique_ptr<ScriptObjectBinder>
-  extract(class ScriptEngine &, class ScriptApi::ScriptObjectHandle const &);
+  // static MCAPI std::unique_ptr<ScriptObjectBinder> extract(class ScriptEngine &, class ScriptApi::ScriptObjectHandle const &);
   MCAPI bool serialize(ScriptEngine &, ScriptApi::ScriptObjectHandle &);
 };

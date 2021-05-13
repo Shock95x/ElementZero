@@ -55,8 +55,7 @@ void LogPacket(bool isSent, NetworkIdentifier id, std::string const &data) {
 
 TInstanceHook(
     NetworkPeer::DataStatus,
-    "?receivePacket@Connection@NetworkHandler@@QEAA?AW4DataStatus@NetworkPeer@@AEAV?$basic_string@DU?$char_traits@D@"
-    "std@@V?$allocator@D@2@@std@@@Z",
+    "?receivePacket@Connection@NetworkHandler@@QEAA?AW4DataStatus@NetworkPeer@@AEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBV?$shared_ptr@V?$time_point@Usteady_clock@chrono@std@@V?$duration@_JU?$ratio@$00$0DLJKMKAA@@std@@@23@@chrono@std@@@6@@Z",
     NetworkHandler::Connection, std::string &data) {
   auto status = original(this, data);
   if (status == NetworkPeer::DataStatus::OK && database) LogPacket(false, id, data);
