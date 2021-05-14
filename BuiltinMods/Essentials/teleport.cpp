@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "global.h"
+#include "Level/Dimension.h"
 
 using namespace Mod::Scheduler;
 
@@ -83,10 +84,10 @@ public:
       return;
     }
     auto pos = it->target->getPos();
-    auto dim = it->target->getDimensionId();
+    auto &dim = it->target->getDimension();
     pos.y -= 1;
     auto source = it->source;
-    source->teleport(pos, {0}, dim);
+    source->teleport(pos, {0}, dim.DimensionId);
     ClearTimeOut(it->token);
     container.get<1>().erase(it);
     output.success("commands.tpaccept.success", {source});
