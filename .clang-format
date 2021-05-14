@@ -1,5 +1,5 @@
 BasedOnStyle: LLVM
-IndentWidth: 2
+IndentWidth: 4
 ColumnLimit: 120
 AlignConsecutiveAssignments: true
 AlignAfterOpenBracket: AlwaysBreak
