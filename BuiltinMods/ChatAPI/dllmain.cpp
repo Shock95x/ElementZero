@@ -2,6 +2,7 @@
 #include <memory>
 
 #include <boost/scope_exit.hpp>
+#include <Core/PacketSender.h>
 
 #include <sqlite3.h>
 #include <SQLiteCpp/SQLiteCpp.h>
@@ -31,26 +32,17 @@ Chat::Chat() { emitter = &Chat::Emit; }
 
 void Chat::SendBroadcast(const std::string &name, const std::string &content) {
     auto packet = TextPacket::createTextPacket<TextPacketType::Chat>(name, content, "");
-    LocateService<Level>()->forEachPlayer([&](Player const &p) -> bool {
-        p.sendNetworkPacket(packet);
-        return true;
-    });
+    LocateService<Level>()->getPacketSender().sendBroadcast(packet);
 }
 
 void Chat::SendAnnounce(const std::string &content) {
     auto packet = TextPacket::createTextPacket<TextPacketType::Announcement>(content);
-    LocateService<Level>()->forEachPlayer([&](Player const &p) -> bool {
-        p.sendNetworkPacket(packet);
-        return true;
-    });
+    LocateService<Level>()->getPacketSender().sendBroadcast(packet);
 }
 
 void Chat::SendAnnounce(const std::string &content, std::initializer_list<std::string> args) {
     auto packet = TextPacket::createTranslatedMessageWithParams(content, args);
-    LocateService<Level>()->forEachPlayer([&](Player const &p) -> bool {
-        p.sendNetworkPacket(packet);
-        return true;
-    });
+    LocateService<Level>()->getPacketSender().sendBroadcast(packet);
 }
 
 void Chat::Send(const Mod::PlayerEntry &entry, const std::string &content) {
@@ -118,12 +110,11 @@ void static logChat(Mod::PlayerEntry const &entry, std::string const &content) {
 }
 
 TClasslessInstanceHook(
-    void,
-    "?_displayGameMessage@ServerNetworkHandler@@AEAAXAEBVPlayer@@AEBV?$basic_string@DU?$char_traits@D@std@@V?$"
-    "allocator@D@2@@std@@@Z",
+    void, "?_displayGameMessage@ServerNetworkHandler@@AEAAXAEBVPlayer@@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z",
     Player *player, std::string &content) try {
 
     DEF_LOGGER("CHAT");
+
     auto &playerdb = Mod::PlayerDatabase::GetInstance().GetData();
     auto it        = playerdb.find(player);
     if (it == playerdb.end()) return;
@@ -144,9 +135,6 @@ TClasslessInstanceHook(
             settings.customChatFormatting.prefix + displayName + settings.customChatFormatting.sufix + " " + content,
             std::to_string(it->xuid));
     }
-    LocateService<Level>()->forEachPlayer([&](Player const &p) -> bool {
-        p.sendNetworkPacket(packet);
-        return true;
-    });
+    LocateService<Level>()->getPacketSender().sendBroadcast(packet);
     logChat(*it, content);
 } catch (...) {}
