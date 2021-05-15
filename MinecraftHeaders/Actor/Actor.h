@@ -6,6 +6,7 @@
 #include "ActorType.h"
 #include "ActorUniqueID.h"
 #include "SynchedActorData.h"
+#include "../Level/Dimension.h"
 #include "../Math/Vec3.h"
 #include "../Container/SimpleContainer.h"
 #include "../Core/AutomaticID.h"
@@ -275,7 +276,7 @@ public:
   MCAPI virtual void handleInsidePortal(class BlockPos const &);
   MCAPI virtual int getPortalCooldown(void) const;
   MCAPI virtual int getPortalWaitTime() const;
-  MCAPI virtual class AutomaticID<class Dimension, int> getDimensionId(void) const;
+  // MCAPI virtual class AutomaticID<class Dimension, int> getDimensionId(void) const;
   MCAPI virtual bool canChangeDimensions() const;
   MCAPI virtual void changeDimension(class AutomaticID<class Dimension, int>, bool);
   MCAPI virtual void changeDimension(class ChangeDimensionRequest const &);
@@ -470,6 +471,7 @@ public:
   MCAPI void forEachLeashedActor(class A6AXPEAVfunction);
 
   MCAPI bool shouldOrphan(class BlockSource &);
+  MCAPI class BlockSource& getRegion(void) const;
 
   MCAPI bool onLadder(bool) const;
   MCAPI void reload(void);
@@ -498,6 +500,10 @@ public:
 
   Vec3 getPos() {
       return direct_access<Vec3>(this, 1220);
+  }
+
+  class AutomaticID<class Dimension, int> getDimensionId() {
+      return this->getDimension().DimensionId;
   }
 
   std::string getEntityName() const {

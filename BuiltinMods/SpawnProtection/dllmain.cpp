@@ -83,32 +83,37 @@ void checkInventoryTransaction(
     case ComplexInventoryTransaction::Type::ITEM_USE: {
       auto &data = (ItemUseInventoryTransaction const &) transaction;
       switch (data.actionType) {
+
       case ItemUseInventoryTransaction::Type::USE_ITEM_ON:
         if (!Check(entry.player, data.pos.x, data.pos.z)) {
-          auto &block  = direct_access<BlockSource *>(entry.player, 0x320)->getBlock(data.pos);
-          auto &legacy = block.LegacyBlock;
+          auto &block  = entry.player->getRegion().getBlock(data.pos);
+          auto &legacy = block.getLegacyBlock();
+
           if (!legacy.isInteractiveBlock() || legacy.BlockID == VanillaBlockTypes::mItemFrame->BlockID ||
               entry.player->isSneaking()) {
-            data.onTransactionError(*entry.player, InventoryTransactionError::Unexcepted);
-            token("Blocked by SpawnProtection");
+
+                token("Blocked by SpawnProtection");
+                data.resendBlocksAroundArea(*entry.player, data.pos, static_cast<unsigned char>(data.face));
           }
+
         }
         break;
       case ItemUseInventoryTransaction::Type::USE_ITEM: break;
       case ItemUseInventoryTransaction::Type::DESTROY:
         if (!Check(entry.player, data.pos.x, data.pos.z)) {
-          data.onTransactionError(*entry.player, InventoryTransactionError::Unexcepted);
-          token("Blocked by SpawnProtection");
+            token("Blocked by SpawnProtection");
+            data.resendBlocksAroundArea(*entry.player, data.pos, static_cast<unsigned char>(data.face));
         }
         break;
       }
+
     } break;
     case ComplexInventoryTransaction::Type::ITEM_USE_ON_ACTOR: {
       auto &data    = (ItemUseOnActorInventoryTransaction const &) transaction;
       auto composed = data.playerPos + data.clickPos;
       if (!Check(entry.player, composed.x, composed.z)) {
-        data.onTransactionError(*entry.player, InventoryTransactionError::Unexcepted);
-        token("Blocked by SpawnProtection");
+          data.onTransactionError(*entry.player, InventoryTransactionError::Unexcepted);
+          token("Blocked by SpawnProtection");
       }
     } break;
     default: break;

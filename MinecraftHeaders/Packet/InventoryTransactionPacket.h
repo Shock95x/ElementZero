@@ -157,7 +157,7 @@ public:
   MCAPI virtual InventoryTransactionError handle(Player &, bool) const;
   MCAPI virtual void onTransactionError(Player &, InventoryTransactionError) const;
 
-  MCAPI void resendBlocksAroundArea(Player &, BlockPos const &, unsigned char) const;
+  MCAPI void resendBlocksAroundArea(Player &, BlockPos const &, unsigned char face) const;
 };
 
 static_assert(offsetof(ItemUseInventoryTransaction, itemInHand) == 136);

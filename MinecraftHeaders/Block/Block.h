@@ -14,7 +14,7 @@ class Block {
 
 public:
   unsigned short aux;
-  WeakPtr<BlockLegacy> legacy;
+  BlockLegacy *legacy;
   CompoundTag definition;
   int runtime_id;
   bool has_runtime_id;
