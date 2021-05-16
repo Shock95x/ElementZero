@@ -10,12 +10,12 @@
 #include <modutils.h>
 
 class BlockActor {
-  char unknown[200];
+  char unknown[192];
 
 public:
   BUILD_ACCESS_MUT(class Block, Block, 16);
   BUILD_ACCESS_MUT(unsigned int, RepairCost_, 40);
-  BUILD_ACCESS_MUT(Vec3, BlockPos, 44);
+  BUILD_ACCESS_MUT(Vec3, BlockPos, 21);
   BUILD_ACCESS_MUT(class AABB, AABB, 56);
   BUILD_ACCESS_MUT(enum BlockActorType, Type, 84);
   BUILD_ACCESS_MUT(std::string, CustomName_, 96);
@@ -62,4 +62,4 @@ protected:
   virtual bool _playerCanUpdate(class Player const &) const;
 };
 
-static_assert(sizeof(BlockActor) == 208);
+static_assert(sizeof(BlockActor) == 200);
