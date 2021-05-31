@@ -158,6 +158,8 @@ public:
     MCAPI class ItemStack const &getSelectedItem(void) const;
     MCAPI enum GameType getPlayerGameType(void) const;
     MCAPI class ItemStack const &getCurrentActiveShield(void) const;
+    MCAPI class SerializedSkin & getSkin(void);
+    MCAPI class SerializedSkin const & getSkin(void) const;
     MCAPI class PlayerInventory &getSupplies(void);
     MCAPI class BlockPos const &getSpawnPosition(void) const;
     MCAPI unsigned char getClientSubId(void) const;

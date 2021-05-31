@@ -1,6 +1,10 @@
+#pragma once
+
 #include "ItemStackDescriptor.h"
 #include "ItemDescriptor.h"
 #include "Block//BlockPalette.h"
+#include "ItemStackNetIdVariant.h"
+#include "ItemStack.h"
 
 class NetworkItemStackDescriptor : public ItemStackDescriptor {
 public:
@@ -8,6 +12,7 @@ public:
     ItemStackNetIdVariant netIdVariant;           // 84
     std::string unk;
 
+    inline NetworkItemStackDescriptor() {}
     MCAPI NetworkItemStackDescriptor(ItemStack const &);
     MCAPI NetworkItemStackDescriptor(ItemStackDescriptor const &);
 

@@ -68,7 +68,7 @@ static ModuleRegister reg("ez:inventory", [](JsObjectWrapper native) -> std::str
     return ToJsArray(container.data);
   };
   native["getInventoryItems"] = +[](Mod::PlayerEntry entry) {
-    auto &container = *entry.player->getInventory().invectory;
+    auto &container = *entry.player->getInventory().inventory;
     return ToJsArray(container.data);
   };
   native["getEnderChestItems"] = +[](Mod::PlayerEntry entry) {

@@ -20,16 +20,16 @@ class BinaryStream;
 
 class SerializedSkin {
 public:
-  std::string skin_id, name, skin_resource_patch, geometry_name;
+  std::string skin_id, playFabId, name, skin_resource_patch, geometry_name;
   mce::Image texture, cape_texture;
   std::vector<AnimatedImageData> animated_imge_data;
   Json::Value geometry_data, geometry_data_mutable;
-  std::string animateion_data, cape_id;
+  std::string animation_data, cape_id; // 280, 312
   bool premium_skin, persona_skin, cape_on_classic_skin;
   enum struct TrustedFlag : char { UNSET, NO, YES } trusted_flag;
   std::vector<SerializedPersonaPieceHandle> appearance;
   std::string appearance_name;
-  std::unordered_map<PieceType, TintMapColor> colormap;
+  std::unordered_map<PieceType, TintMapColor> colormap; // 408
   Color skin_color;
 
 #pragma region methods
@@ -82,10 +82,16 @@ public:
 #pragma endregion
 };
 
-static_assert(offsetof(SerializedSkin, premium_skin) == 312);
-static_assert(offsetof(SerializedSkin, persona_skin) == 313);
-static_assert(offsetof(SerializedSkin, trusted_flag) == 315);
-static_assert(offsetof(SerializedSkin, appearance) == 320);
-static_assert(offsetof(SerializedSkin, appearance_name) == 344);
-static_assert(offsetof(SerializedSkin, colormap) == 376);
-static_assert(offsetof(SerializedSkin, skin_color) == 440);
+static_assert(offsetof(SerializedSkin, texture) == 160);
+static_assert(offsetof(SerializedSkin, cape_texture) == 192);
+static_assert(offsetof(SerializedSkin, geometry_data) == 248);
+static_assert(offsetof(SerializedSkin, geometry_data_mutable) == 264);
+static_assert(offsetof(SerializedSkin, animation_data) == 280);
+static_assert(offsetof(SerializedSkin, cape_id) == 312);
+static_assert(offsetof(SerializedSkin, premium_skin) == 344);
+static_assert(offsetof(SerializedSkin, persona_skin) == 345);
+static_assert(offsetof(SerializedSkin, cape_on_classic_skin) == 346);
+static_assert(offsetof(SerializedSkin, appearance) == 352);
+static_assert(offsetof(SerializedSkin, appearance_name) == 376);
+static_assert(offsetof(SerializedSkin, colormap) == 408);
+static_assert(offsetof(SerializedSkin, skin_color) == 472);

@@ -10,6 +10,8 @@ public:
   BlockPos pos;
   CompoundTag tag;
 
+  BlockActorDataPacket(BlockPos const& pos, CompoundTag tag);
+
   inline ~BlockActorDataPacket() {}
   MCAPI virtual MinecraftPacketIds getId() const;
   MCAPI virtual std::string getName() const;

@@ -13,6 +13,7 @@ class IDataInput;
 class IDataOutput;
 class PrintStream;
 
+
 struct TagMemoryChunk {
   size_t m_cap, m_size;
   std::unique_ptr<unsigned char[]> m_data;
@@ -49,6 +50,9 @@ public:
   virtual void print(std::string const &, PrintStream &) const;
   virtual std::unique_ptr<Tag> copy() const;
   virtual std::uint64_t hash() const;
+
+protected:
+    Tag();
 };
 
 class MCAPI EndTag : public Tag {
@@ -66,6 +70,9 @@ public:
 class MCAPI ByteTag : public Tag {
 public:
   unsigned char value;
+
+  ByteTag();
+  ByteTag(unsigned char);
   virtual ~ByteTag() override;
   virtual void write(IDataOutput &) const override;
   virtual void load(IDataInput &) override;
@@ -79,6 +86,8 @@ public:
 class MCAPI ShortTag : public Tag {
 public:
   short value;
+
+  ShortTag(short);
   virtual ~ShortTag() override;
   virtual void write(IDataOutput &) const override;
   virtual void load(IDataInput &) override;
@@ -92,6 +101,8 @@ public:
 class MCAPI IntTag : public Tag {
 public:
   int32_t value;
+
+  IntTag(int);
   virtual ~IntTag() override;
   virtual void write(IDataOutput &) const override;
   virtual void load(IDataInput &) override;
@@ -105,6 +116,9 @@ public:
 class MCAPI Int64Tag : public Tag {
 public:
   int64_t value;
+
+  Int64Tag();
+  Int64Tag(__int64);
   virtual ~Int64Tag() override;
   virtual void write(IDataOutput &) const override;
   virtual void load(IDataInput &) override;
@@ -118,6 +132,8 @@ public:
 class MCAPI FloatTag : public Tag {
 public:
   float value;
+
+  FloatTag();
   virtual ~FloatTag() override;
   virtual void write(IDataOutput &) const override;
   virtual void load(IDataInput &) override;
@@ -131,6 +147,8 @@ public:
 class MCAPI DoubleTag : public Tag {
 public:
   double value;
+
+  DoubleTag();
   virtual ~DoubleTag() override;
   virtual void write(IDataOutput &) const override;
   virtual void load(IDataInput &) override;
@@ -144,6 +162,8 @@ public:
 class MCAPI ByteArrayTag : public Tag {
 public:
   TagMemoryChunk value;
+
+  ByteArrayTag();
   virtual ~ByteArrayTag() override;
   virtual void write(IDataOutput &) const override;
   virtual void load(IDataInput &) override;
@@ -157,6 +177,8 @@ public:
 class MCAPI StringTag : public Tag {
 public:
   std::string value;
+
+  StringTag(std::string);
   virtual ~StringTag() override;
   virtual void write(IDataOutput &) const override;
   virtual void load(IDataInput &) override;
@@ -170,6 +192,8 @@ public:
 class MCAPI ListTag : public Tag {
 public:
   std::vector<std::unique_ptr<Tag>> value;
+
+  ListTag();
   virtual ~ListTag() override;
   virtual void deleteChildren() override;
   virtual void write(IDataOutput &) const override;
@@ -190,9 +214,27 @@ public:
   int getInt(int) const;
 };
 
+class MCAPI IntArrayTag : public Tag {
+  public:
+    TagMemoryChunk value;
+
+    IntArrayTag();
+    virtual ~IntArrayTag() override;
+    virtual void write(IDataOutput &) const override;
+    virtual void load(IDataInput &) override;
+    virtual std::string toString() const override;
+    virtual Tag::Type getId() const override; // 11
+    virtual bool equals(Tag const &) const override;
+    virtual std::unique_ptr<Tag> copy() const override;
+    virtual std::uint64_t hash() const override;
+};
+
 class MCAPI CompoundTag : public Tag {
 public:
   std::map<std::string, class CompoundTagVariant> value;
+
+  CompoundTag();
+  CompoundTag(CompoundTag &&);
   virtual ~CompoundTag() override;
   virtual void write(IDataOutput &) const override;
   virtual void load(IDataInput &) override;
@@ -238,23 +280,11 @@ public:
   std::unique_ptr<CompoundTag> clone(void) const;
 };
 
-class MCAPI IntArrayTag : public Tag {
-public:
-  TagMemoryChunk value;
-  virtual ~IntArrayTag() override;
-  virtual void write(IDataOutput &) const override;
-  virtual void load(IDataInput &) override;
-  virtual std::string toString() const override;
-  virtual Tag::Type getId() const override; // 11
-  virtual bool equals(Tag const &) const override;
-  virtual std::unique_ptr<Tag> copy() const override;
-  virtual std::uint64_t hash() const override;
-};
-
 class CompoundTagVariant : std::variant<
-                               EndTag, ByteTag, ShortTag, IntTag, Int64Tag, FloatTag, DoubleTag, ByteArrayTag,
-                               StringTag, ListTag, CompoundTag, IntArrayTag> {
-  using std::variant<
-      EndTag, ByteTag, ShortTag, IntTag, Int64Tag, FloatTag, DoubleTag, ByteArrayTag, StringTag, ListTag, CompoundTag,
-      IntArrayTag>::variant;
+    EndTag, ByteTag, ShortTag, IntTag, Int64Tag, FloatTag, DoubleTag, ByteArrayTag,
+    StringTag, ListTag, CompoundTag, IntArrayTag> {
+
+    using std::variant<
+        EndTag, ByteTag, ShortTag, IntTag, Int64Tag, FloatTag, DoubleTag, ByteArrayTag, StringTag, ListTag, CompoundTag,
+        IntArrayTag>::variant;
 };

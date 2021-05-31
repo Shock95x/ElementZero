@@ -22,7 +22,7 @@ struct Config {
   PlayerEntry entry;
   std::string text = "dummy";
   float percent    = 0.5f;
-  uint32_t color   = 0; // Not implmented in client
+  uint32_t color   = 0; // Not implemented in client
 };
 
 class Instance;

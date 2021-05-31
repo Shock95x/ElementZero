@@ -12,7 +12,7 @@ public:
   ContainerID id     = ContainerID::Invalid;
   ContainerType type = (ContainerType) 0;
   BlockPos pos;
-  ActorUniqueID actor_id;
+  ActorUniqueID actor_id = -1;
 
   inline ~ContainerOpenPacket() {}
   MCAPI virtual MinecraftPacketIds getId() const;

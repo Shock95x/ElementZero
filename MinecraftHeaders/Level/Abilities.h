@@ -30,7 +30,9 @@ public:
 
 class Abilities {
 public:
-  std::unique_ptr<PermissionsHandler> mPermissionsHandler;
-  std::array<Ability, 18> Abilities;
-  std::array<Ability, 8> CustomAbilities;
+    std::unique_ptr<PermissionsHandler> mPermissionsHandler;
+    std::array<Ability, 18> abilities;
+    std::array<Ability, 8> customAbilities;
+
+    MCAPI Abilities(void);
 };

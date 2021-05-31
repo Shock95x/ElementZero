@@ -43,6 +43,7 @@ public:
   };
   MCAPI void disconnect();
   MCAPI void runEvents();
+  MCAPI void send(class NetworkIdentifier const &, class Packet const &, unsigned char);
   MCAPI class NetworkPeer *getPeerForUser(class NetworkIdentifier const &);
 };
 

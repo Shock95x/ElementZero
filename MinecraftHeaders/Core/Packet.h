@@ -2,11 +2,12 @@
 
 #include <cstdint>
 #include <string>
+#include <dll.h>
 
 enum class PacketReliability { Relible, RelibleOrdered };
 enum class StreamReadResult {};
-enum class  ExtendedStreamReadResult {};
 enum class MinecraftPacketIds {};
+struct ExtendedStreamReadResult {};
 class BinaryStream;
 class ReadOnlyBinaryStream;
 
@@ -31,9 +32,7 @@ public:
         return _read(stream);
     }
 
-    inline virtual ExtendedStreamReadResult readExtended(ReadOnlyBinaryStream &stream) {
-      return (ExtendedStreamReadResult) _read(stream);
-    }
+    MCAPI virtual ExtendedStreamReadResult readExtended(ReadOnlyBinaryStream &stream);
 
     inline virtual bool disallowBatching() const { return false; }
 

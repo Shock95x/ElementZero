@@ -3,22 +3,23 @@
 #include <cstdint>
 #include <vector>
 #include <memory>
+#include <Actor/SynchedActorData.h>
 
 #include "../Core/Packet.h"
 #include "../Core/DataItem.h"
 #include "../Math/Vec3.h"
 #include "../Actor/ActorUniqueID.h"
 #include "../Actor/ActorRuntimeID.h"
-#include "../Item/ItemStack.h"
+#include "../Item/NetworkItemStackDescriptor.h"
 #include "../dll.h"
 
 class AddItemActorPacket : public Packet {
 public:
   std::vector<std::unique_ptr<DataItem>> items;
-  uint64_t type = 0;
+  SynchedActorData *data = nullptr;
   ActorUniqueID uid;
   ActorRuntimeID rid;
-  ItemStack stack;
+  NetworkItemStackDescriptor stack;
   Vec3 pos, speed;
   bool from_fishing = false;
 
@@ -31,4 +32,9 @@ private:
     MCAPI virtual StreamReadResult _read(ReadOnlyBinaryStream &);
 };
 
+static_assert(offsetof(AddItemActorPacket, items) == 48);
+static_assert(offsetof(AddItemActorPacket, uid) == 80);
+static_assert(offsetof(AddItemActorPacket, rid) == 88);
+static_assert(offsetof(AddItemActorPacket, stack) == 96);
+static_assert(offsetof(AddItemActorPacket, pos) == 224);
 static_assert(offsetof(AddItemActorPacket, from_fishing) == 248);

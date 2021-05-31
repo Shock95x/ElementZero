@@ -15,7 +15,7 @@ public:
   int selectedSlot = 0;
   ItemStack item;
   char selectedContainerId = 0;
-  std::unique_ptr<Inventory> invectory;
+  std::unique_ptr<Inventory> inventory;
   std::vector<ItemStack> complexItems;
   std::weak_ptr<HudContainerManagerModel> model;
 
@@ -25,3 +25,5 @@ public:
   MCAPI void createTransactionContext(
       std::function<void(Container &, int, const ItemStack &, const ItemStack &)>, std::function<void()>);
 };
+
+static_assert(offsetof(PlayerInventory, inventory) == 176); // Player::getInventory

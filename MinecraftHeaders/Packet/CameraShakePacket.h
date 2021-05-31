@@ -21,9 +21,11 @@ public:
     float duration;
     CameraShakeType type;
     CameraShakeAction action;
+
     inline ~CameraShakePacket() {}
     MCAPI CameraShakePacket(enum CameraShakeAction);
     MCAPI CameraShakePacket(float, float, enum CameraShakeType);
+
     MCAPI virtual MinecraftPacketIds getId() const;
     MCAPI virtual std::string getName() const;
     MCAPI virtual void write(BinaryStream &) const;

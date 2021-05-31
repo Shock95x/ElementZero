@@ -10,22 +10,28 @@
 
 class FillingContainer : public Container {
 public:
-  std::vector<ItemStack> data;
-  Player *player;
+    std::vector<ItemStack> data;
+    Player *player;
 
-  MCAPI FillingContainer(Player *, int, ContainerType);
+    MCAPI FillingContainer(Player *, int, ContainerType);
 
-  virtual bool add(ItemStack &);
-  virtual bool canAdd(ItemStack const &);
-  virtual void dropAll(bool);
-  virtual void clearSlot(int);
-  virtual void clearInvertory(int);
-  virtual void load(ListTag const &, SemVersion const &, Level &);
-  virtual void doDrop(ItemStack &, bool);
-  virtual int getEmptySlotsCount() const;
-  virtual void dropAll(int, int, bool);
+    MCAPI virtual bool add(ItemStack &);
+    MCAPI virtual bool canAdd(ItemStack const &) const;
 
-  MCAPI std::unique_ptr<ListTag> save();
+    MCAPI virtual void clearSlot(int);
+    MCAPI virtual int clearInventory(int);
+    MCAPI virtual void load(ListTag const &, SemVersion const &, Level &);
+    MCAPI virtual int getEmptySlotsCount() const;
+
+    MCAPI virtual ItemStack const &getItem(int) const override;
+    MCAPI virtual void setItem(int, ItemStack const &) override;
+    MCAPI virtual int getContainerSize() const override;
+    MCAPI virtual int getMaxStackSize() const override;
+    MCAPI virtual void startOpen(Player &) override;
+    MCAPI virtual void stopOpen(Player &) override;
+    MCAPI virtual void serverInitItemStackIds(int, int, std::function<void(int, class ItemStack const &)>) override;
+
+    MCAPI std::unique_ptr<ListTag> save();
 };
 
 static_assert(offsetof(FillingContainer, data) == 224);
