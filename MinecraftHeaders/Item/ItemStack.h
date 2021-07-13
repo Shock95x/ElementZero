@@ -162,6 +162,8 @@ class ItemStack : public ItemStackBase {
 public:
   ItemStackNetIdVariant var_id;
 
+  MCAPI static ItemStack const EMPTY_ITEM;
+
   MCAPI ItemStack();
   ItemStack(Item const &item) : ItemStackBase(item) {}
   MCAPI ItemStack(Item const &, int);

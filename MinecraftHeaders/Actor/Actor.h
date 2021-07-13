@@ -18,6 +18,7 @@
 
 #include <hook.h>
 #include <modutils.h>
+#include <Command/CommandUtils.h>
 
 class Dimension;
 enum class ActorType;
@@ -431,12 +432,13 @@ public:
   MCAPI bool hasSubBBInLava(void) const;
   MCAPI bool hasTickingArea(void) const;
   MCAPI bool hasEffect(class MobEffect const &) const;
-  MCAPI bool hasFamily(class Util::HashString const &) const;
+  MCAPI bool hasFamily(class HashedString const &) const;
   MCAPI bool hasTag(std::string const &) const;
 
   MCAPI void addEffect(class MobEffectInstance const &);
   MCAPI bool addTag(std::string const &);
 
+  MCAPI bool removeTag(std::string const &);
   MCAPI void removeEffect(int);
   MCAPI void removeAllEffects(void);
   MCAPI void removeAllRiders(bool, bool);
@@ -499,7 +501,7 @@ public:
   template <typename T> MCAPI T const *tryGetComponent(void) const;
 
   Vec3 getPos() {
-      return direct_access<Vec3>(this, 1220);
+      return direct_access<Vec3>(this, 1268);
   }
 
   class AutomaticID<class Dimension, int> getDimensionId() {
@@ -507,9 +509,7 @@ public:
   }
 
   std::string getEntityName() const {
-      std::string name;
-      CallServerFunction<void>("?getActorName@CommandUtils@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBVActor@@@Z", &name, this);
-      return name;
+      return CommandUtils::getActorName(*this);
   }
 
   void teleport(Vec3 target, Vec3 old, AutomaticID<Dimension, int> dim, RelativeFloat yaw = {0}, RelativeFloat pitch = {0}, int flag = 15) {

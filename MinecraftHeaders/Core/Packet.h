@@ -6,7 +6,7 @@
 
 enum class PacketReliability { Relible, RelibleOrdered };
 enum class StreamReadResult {};
-enum class MinecraftPacketIds {};
+enum class MinecraftPacketIds;
 struct ExtendedStreamReadResult {};
 class BinaryStream;
 class ReadOnlyBinaryStream;

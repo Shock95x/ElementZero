@@ -5,22 +5,21 @@
 #include "../Core/ContainerID.h"
 #include "../Core/Packet.h"
 
-class InventoryContentPacket : public Packet {
+class InventorySlotPacket : public Packet {
 public:
 
     ContainerID id;
-    std::vector<NetworkItemStackDescriptor> items;
+    uint32_t slot;
+    NetworkItemStackDescriptor item;
 
-    inline ~InventoryContentPacket() {}
+    inline ~InventorySlotPacket() {}
 
-    MCAPI InventoryContentPacket(void);
-    MCAPI InventoryContentPacket(ContainerID containerId, std::vector<ItemStack> const & items);
+    MCAPI InventorySlotPacket(void);
+    MCAPI InventorySlotPacket(enum ContainerID containerId, unsigned int slot, class ItemStack const &item);
 
     MCAPI virtual MinecraftPacketIds getId() const;
     MCAPI virtual std::string getName() const;
     MCAPI virtual void write(BinaryStream &) const;
-
-    MCAPI static InventoryContentPacket fromPlayerInventoryId(ContainerID containerId, class Player & player);
 
 private:
     MCAPI virtual StreamReadResult _read(ReadOnlyBinaryStream &);

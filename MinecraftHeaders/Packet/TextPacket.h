@@ -27,7 +27,7 @@ public:
   std::vector<std::string> args;
   bool translated;
   std::string xuid;
-  std::string unknown; // 184
+  std::string platformId; // 184
 
   template <TextPacketType type, bool translated = true>
   static inline TextPacket createTextPacket(std::string content) {
@@ -74,4 +74,4 @@ private:
 };
 
 static_assert(offsetof(TextPacket, type) == 48);
-static_assert(offsetof(TextPacket, unknown) == 184);
+static_assert(offsetof(TextPacket, platformId) == 184);

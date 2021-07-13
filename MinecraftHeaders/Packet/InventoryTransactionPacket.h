@@ -78,9 +78,10 @@ template <> struct hash<InventorySource> {
 
 class InventoryAction {
 public:
-  InventorySource source;
-  unsigned int slot = 0;
-  ItemStack from, to;
+    InventorySource source;
+    unsigned int slot = 0;
+    NetworkItemStackDescriptor netItem1, netItem2;
+    ItemStack from, to;
 };
 
 class InventoryTransactionItemGroup {

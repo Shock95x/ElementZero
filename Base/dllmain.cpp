@@ -8,6 +8,7 @@
 #include <boost/format.hpp>
 #include <SQLiteCpp/SQLiteCpp.h>
 #include <Core/Minecraft.h>
+#include <Core/ServerInstance.h>
 #include <Core/mce.h>
 
 #include <hook.h>
@@ -30,6 +31,8 @@ public:
 static DedicatedServer *mDedicatedServer = nullptr;
 static RakNet::RakPeer *mRakPeer         = nullptr;
 static AppPlatform *mAppPlatform         = nullptr;
+static ServerInstance *mServerInstance   = nullptr;
+
 std::string session;
 
 mce::UUID const &SessionUUID() {
@@ -41,11 +44,7 @@ mce::UUID const &SessionUUID() {
 }
 
 template <> DedicatedServer *LocateService<DedicatedServer>() { return mDedicatedServer; }
-template <> ServerInstance *LocateService<ServerInstance>() {
-  static auto ptr = GetServerSymbol<ServerInstance *>(
-      "?mService@?$ServiceLocator@VServerInstance@@@@0V?$NonOwnerPointer@VServerInstance@@@Bedrock@@A");
-  return *ptr;
-}
+template <> ServerInstance *LocateService<ServerInstance>() { return mServerInstance; }
 template <> Level *LocateService<Level>() { return LocateService<Minecraft>()->getLevel(); }
 template <> RakNet::RakPeer *LocateService<RakNet::RakPeer>() { return mRakPeer; }
 template <> AppPlatform *LocateService<AppPlatform>() { return mAppPlatform; }
@@ -62,6 +61,11 @@ TInstanceHook(
   mDedicatedServer = this;
   session          = uuid;
   return original(this, uuid);
+}
+
+TInstanceHook2("ServerInstance::startServerThread", void, "?startServerThread@ServerInstance@@QEAAXXZ", ServerInstance) {
+    mServerInstance = this;
+    original(this);
 }
 
 TInstanceHook(

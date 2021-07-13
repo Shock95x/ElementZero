@@ -56,6 +56,8 @@ public:
       }
     };
 
+    enum class PlayerPermissionLevel { Visitor, Member, Operator, Custom };
+
     inline ServerPlayer *asServerPlayer() const noexcept {
       return const_cast<ServerPlayer *>(reinterpret_cast<ServerPlayer const *>(this));
     }
@@ -157,6 +159,7 @@ public:
     MCAPI float getDestroyProgress(class Block const &) const;
     MCAPI class ItemStack const &getSelectedItem(void) const;
     MCAPI enum GameType getPlayerGameType(void) const;
+    MCAPI enum PlayerPermissionLevel getPlayerPermissionLevel(void) const;
     MCAPI class ItemStack const &getCurrentActiveShield(void) const;
     MCAPI class SerializedSkin & getSkin(void);
     MCAPI class SerializedSkin const & getSkin(void) const;
@@ -191,7 +194,7 @@ public:
     MCAPI NetworkIdentifier const & getClientId(void) const;
 
     inline void sendNetworkPacket(class Packet &pkt) const {
-        (*(void (__fastcall **) (const Player*, Packet&)) (*(__int64 *) this + 3472))(this, pkt);
+        CallServerClassMethod<void>("?sendNetworkPacket@ServerPlayer@@UEBAXAEAVPacket@@@Z", this, &pkt);
     }
 
   BUILD_ACCESS_COMPAT(PlayerInventory &, Inventory);
@@ -204,3 +207,4 @@ public:
   BUILD_ACCESS_COMPAT(std::string &, ClientPlatformOnlineId);
   BASEAPI void kick();
 };
+

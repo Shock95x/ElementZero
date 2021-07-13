@@ -82,7 +82,7 @@ void PreInit() {
               if (auto me = dynamic_cast<MySignBlockActor *>(ba)) {
                 if (player.canUseOperatorBlocks()) {
                   auto &stack = player.getSelectedItem();
-                  if (stack.Id == VanillaItems::mWritable_book->Id) {
+                  if (stack.Id == VanillaItems::mWritable_book->getId()) {
                     auto &tag   = *stack.tag;
                     auto &pages = *tag.getList("pages");
                     std::string commands;

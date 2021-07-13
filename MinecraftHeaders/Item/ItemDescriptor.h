@@ -8,7 +8,13 @@ class Block;
 
 class ItemDescriptor {
 public:
-    char pad[0x28];
+    WeakPtr<Item> item;
+    char pad[64];
+
+    inline ~ItemDescriptor() {}
+
+    ItemDescriptor(void);
+    ItemDescriptor(class Item const &, int);
 
     MCAPI bool isValid(void) const;
     MCAPI bool isNull(void) const;
@@ -23,4 +29,15 @@ public:
     MCAPI std::string getRawNameId() const;
 
     MCAPI WeakPtr<BlockLegacy> const & getBlockLegacy() const;
+
 };
+
+class ItemDescriptorCount : public ItemDescriptor {
+public:
+    unsigned short count;
+
+    inline ItemDescriptorCount() {}
+    inline ~ItemDescriptorCount() {}
+};
+
+static_assert(sizeof(ItemDescriptor) == 72);

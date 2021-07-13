@@ -6,6 +6,8 @@
 #include "../Command/CommandPermissionLevel.h"
 #include "PlayerPermissions.h"
 
+enum class AbilitiesIndex {};
+
 class PermissionsHandler {
 public:
   CommandPermissionLevel mCommandPermissionsLevel;
@@ -33,6 +35,13 @@ public:
     std::unique_ptr<PermissionsHandler> mPermissionsHandler;
     std::array<Ability, 18> abilities;
     std::array<Ability, 8> customAbilities;
+    char pad[16];
 
     MCAPI Abilities(void);
+    MCAPI Abilities(Abilities const &);
+
+    MCAPI void setAbility(AbilitiesIndex, bool);
+    MCAPI void setPlayerPermissions(enum PlayerPermissionLevel);
 };
+
+static_assert(sizeof(Abilities) == 336);

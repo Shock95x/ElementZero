@@ -23,5 +23,6 @@ public:
 
 class GameRules {
 public:
-  std::vector<GameRule> rules;
+    std::vector<GameRule> rules;
+    std::map<HashedString, GameRule> unk;
 };

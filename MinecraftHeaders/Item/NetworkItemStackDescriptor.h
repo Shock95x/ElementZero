@@ -6,11 +6,11 @@
 #include "ItemStackNetIdVariant.h"
 #include "ItemStack.h"
 
-class NetworkItemStackDescriptor : public ItemStackDescriptor {
+class NetworkItemStackDescriptor : public ItemDescriptorCount {
 public:
-    bool includeNetIds;                           // 80
-    ItemStackNetIdVariant netIdVariant;           // 84
-    std::string unk;
+    bool includeNetIds;                     // 80
+    ItemStackNetIdVariant serverNetId;      // 84
+    std::string unk;                        // 96
 
     inline NetworkItemStackDescriptor() {}
     MCAPI NetworkItemStackDescriptor(ItemStack const &);
@@ -27,5 +27,5 @@ private:
 };
 
 static_assert(offsetof(NetworkItemStackDescriptor, includeNetIds) == 80);
-static_assert(offsetof(NetworkItemStackDescriptor, netIdVariant) == 84);
+static_assert(offsetof(NetworkItemStackDescriptor, serverNetId) == 84);
 static_assert(offsetof(NetworkItemStackDescriptor, unk) == 96);

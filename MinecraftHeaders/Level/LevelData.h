@@ -45,6 +45,7 @@ extern MCAPI StringKey SEED;
 // ref: LevelData::getTagData
 class LevelData {
 public:
+  char pad[4];
   AdventureSettings mAdventureSettings;
   WorldTemplateLevelData mPremiumTemplate;
   GameRules mGameRules;
@@ -181,19 +182,20 @@ public:
   DEF_FIELD_RW(int, SpawnDimension);
 };
 
-static_assert(offsetof(LevelData, mGameRules) == 288);
-static_assert(offsetof(LevelData, mExperiments) == 312);
-static_assert(offsetof(LevelData, mAbilities) == 352);
-static_assert(offsetof(LevelData, mName) == 672);
-static_assert(offsetof(LevelData, mStorageVersion) == 704);
-static_assert(offsetof(LevelData, mGameVersion) == 712);
-static_assert(offsetof(LevelData, mNetworkVersion) == 768);
-static_assert(offsetof(LevelData, mInventoryVersion) == 776);
-static_assert(offsetof(LevelData, mTick) == 888);
-static_assert(offsetof(LevelData, mLimitedWorldOrigin) == 900);
-static_assert(offsetof(LevelData, mDayCycleTime) == 912);
-static_assert(offsetof(LevelData, mServerChunkTickRange) == 928);
-static_assert(offsetof(LevelData, mSingleUseWorld) == 1045);
-static_assert(offsetof(LevelData, mEducationProductId) == 1080);
-static_assert(offsetof(LevelData, mNetherType) == 1119);
-static_assert(offsetof(LevelData, mSpawnSettings) == 1120);
+static_assert(offsetof(LevelData, mGameRules) == 296);
+static_assert(offsetof(LevelData, mExperiments) == 336);
+static_assert(offsetof(LevelData, mAbilities) == 376);
+static_assert(offsetof(LevelData, mName) == 712);
+static_assert(offsetof(LevelData, mStorageVersion) == 744);
+static_assert(offsetof(LevelData, mGameVersion) == 752);
+static_assert(offsetof(LevelData, mNetworkVersion) == 808);
+static_assert(offsetof(LevelData, mInventoryVersion) == 816);
+static_assert(offsetof(LevelData, mTick) == 928);
+static_assert(offsetof(LevelData, mLimitedWorldOrigin) == 940);
+static_assert(offsetof(LevelData, mDayCycleTime) == 952);
+static_assert(offsetof(LevelData, mServerChunkTickRange) == 968);
+static_assert(offsetof(LevelData, mSingleUseWorld) == 1085);
+static_assert(offsetof(LevelData, mEducationProductId) == 1120);
+static_assert(offsetof(LevelData, mNetherType) == 1159);
+static_assert(offsetof(LevelData, mSpawnSettings) == 1160);
+static_assert(offsetof(LevelData, mBiomeOverride) == 1336);

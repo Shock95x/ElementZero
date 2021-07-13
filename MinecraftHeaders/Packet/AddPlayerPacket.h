@@ -32,10 +32,10 @@ public:
     float head_yaw = 0.0f; // 200
     std::vector<std::unique_ptr<DataItem>> data_items; // 208
     Abilities abilities; // 232
-    std::string device_id; // 552
+    std::string device_id; // 568
     int build_platform          = 0;
-    NetworkItemStackDescriptor selected_item; // 592
-    SynchedActorData *syncedata = nullptr; // 720
+    NetworkItemStackDescriptor selected_item; // 608
+    SynchedActorData *syncedata = nullptr;
 
     inline AddPlayerPacket() {}
     inline ~AddPlayerPacket() {}
@@ -54,6 +54,5 @@ static_assert(offsetof(AddPlayerPacket, speed) == 180);
 static_assert(offsetof(AddPlayerPacket, head_yaw) == 200);
 static_assert(offsetof(AddPlayerPacket, data_items) == 208);
 static_assert(offsetof(AddPlayerPacket, abilities) == 232);
-static_assert(offsetof(AddPlayerPacket, device_id) == 552);
-static_assert(offsetof(AddPlayerPacket, selected_item) == 592);
-static_assert(offsetof(AddPlayerPacket, syncedata) == 720);
+static_assert(offsetof(AddPlayerPacket, device_id) == 568);
+static_assert(offsetof(AddPlayerPacket, selected_item) == 608);

@@ -20,17 +20,17 @@ class BinaryStream;
 
 class SerializedSkin {
 public:
-  std::string skin_id, playFabId, name, skin_resource_patch, geometry_name;
-  mce::Image texture, cape_texture;
-  std::vector<AnimatedImageData> animated_imge_data;
-  Json::Value geometry_data, geometry_data_mutable;
-  std::string animation_data, cape_id; // 280, 312
-  bool premium_skin, persona_skin, cape_on_classic_skin;
-  enum struct TrustedFlag : char { UNSET, NO, YES } trusted_flag;
-  std::vector<SerializedPersonaPieceHandle> appearance;
-  std::string appearance_name;
-  std::unordered_map<PieceType, TintMapColor> colormap; // 408
-  Color skin_color;
+    std::string skin_id, playFabId, name, skin_resource_patch, geometry_name;
+    mce::Image texture, cape_texture;
+    std::vector<AnimatedImageData> animated_imge_data;
+    Json::Value geometry_data, geometry_data_mutable;
+    std::string animation_data, cape_id;
+    bool premium_skin, persona_skin, cape_on_classic_skin;
+    std::vector<SerializedPersonaPieceHandle> appearance;
+    std::string appearance_name;
+    std::unordered_map<PieceType, TintMapColor> colormap;
+    Color skin_color;
+    enum struct TrustedFlag : char { UNSET, NO, YES } trusted_flag;
 
 #pragma region methods
   MCAPI SerializedSkin();
@@ -83,15 +83,18 @@ public:
 };
 
 static_assert(offsetof(SerializedSkin, texture) == 160);
-static_assert(offsetof(SerializedSkin, cape_texture) == 192);
-static_assert(offsetof(SerializedSkin, geometry_data) == 248);
-static_assert(offsetof(SerializedSkin, geometry_data_mutable) == 264);
-static_assert(offsetof(SerializedSkin, animation_data) == 280);
-static_assert(offsetof(SerializedSkin, cape_id) == 312);
-static_assert(offsetof(SerializedSkin, premium_skin) == 344);
-static_assert(offsetof(SerializedSkin, persona_skin) == 345);
-static_assert(offsetof(SerializedSkin, cape_on_classic_skin) == 346);
-static_assert(offsetof(SerializedSkin, appearance) == 352);
-static_assert(offsetof(SerializedSkin, appearance_name) == 376);
-static_assert(offsetof(SerializedSkin, colormap) == 408);
-static_assert(offsetof(SerializedSkin, skin_color) == 472);
+static_assert(offsetof(SerializedSkin, cape_texture) == 200);
+static_assert(offsetof(SerializedSkin, geometry_data) == 264);
+static_assert(offsetof(SerializedSkin, geometry_data_mutable) == 280);
+static_assert(offsetof(SerializedSkin, animation_data) == 296);
+static_assert(offsetof(SerializedSkin, cape_id) == 328);
+static_assert(offsetof(SerializedSkin, premium_skin) == 360);
+static_assert(offsetof(SerializedSkin, persona_skin) == 361);
+static_assert(offsetof(SerializedSkin, cape_on_classic_skin) == 362);
+static_assert(offsetof(SerializedSkin, appearance) == 368);
+static_assert(offsetof(SerializedSkin, appearance_name) == 392);
+static_assert(offsetof(SerializedSkin, colormap) == 424);
+static_assert(offsetof(SerializedSkin, skin_color) == 488);
+static_assert(offsetof(SerializedSkin, trusted_flag) == 504);
+
+static_assert(sizeof(SerializedSkin) == 512);

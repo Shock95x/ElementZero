@@ -37,9 +37,12 @@ public:
 class Blob {
 public:
   std::unique_ptr<unsigned char[]> buffer;
+  char pad[8];
   size_t length = 0;
 
-  inline Blob() {}
+  MCAPI Blob(void);
+  MCAPI ~Blob(void);
+
   inline Blob(Blob &&rhs) : buffer(std::move(rhs.buffer)), length(rhs.length) { rhs.length = 0; }
   inline Blob(size_t input_length) : buffer(std::make_unique<unsigned char[]>(input_length)), length(input_length) {}
   inline Blob(unsigned char const *input, size_t input_length) : Blob(input_length) {
@@ -71,6 +74,8 @@ public:
   inline auto getSpan() const { return gsl::make_span(data(), size()); }
 };
 
+static_assert(sizeof(Blob) == 24);
+
 enum ImageFormat { NONE, RGB, RGBA };
 enum ImageUsage : char {};
 
@@ -91,6 +96,7 @@ public:
   unsigned width, height;
   ImageUsage usage;
   Blob data;
+
   inline Image(Blob &&data) : data(std::move(data)) {}
   inline Image(unsigned width, unsigned height, ImageFormat format, ImageUsage usage)
       : format(format), width(width), height(height), usage(usage) {}
@@ -120,7 +126,7 @@ public:
     this->usage  = usage;
   }
 
-  inline void setRawImge(Blob &&buffer) { data = std::move(buffer); }
+  inline void setRawImage(Blob &&buffer) { data = std::move(buffer); }
 };
 
 static_assert(offsetof(Image, data) == 16);

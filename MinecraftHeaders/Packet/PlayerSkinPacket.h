@@ -19,3 +19,7 @@ public:
   private:
     MCAPI virtual StreamReadResult _read(ReadOnlyBinaryStream &);
 };
+
+static_assert(offsetof(PlayerSkinPacket, skin) == 64);
+static_assert(offsetof(PlayerSkinPacket, new_name) == 576);
+static_assert(offsetof(PlayerSkinPacket, old_name) == 608);

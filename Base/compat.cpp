@@ -23,10 +23,10 @@ template <typename Holder> struct ValueHolder {
 #pragma region Player
 
 // Actor::Actor
-SynchedActorData &Actor::getEntityData() const { return direct_access<SynchedActorData>(this, 352); }
+SynchedActorData &Actor::getEntityData() const { return direct_access<SynchedActorData>(this, 384); }
 
 // Actor::getArmorContainer
-SimpleContainer &Actor::getEquipmentContainer() const { return direct_access<SimpleContainer>(this, 1512); }
+SimpleContainer &Actor::getEquipmentContainer() const { return direct_access<SimpleContainer>(this, 1648); }
 
 // Player::Player
 class EnderChestContainer *Player::getEnderChestContainer() const {
@@ -34,26 +34,26 @@ class EnderChestContainer *Player::getEnderChestContainer() const {
 }
 
 // Player::getSelectedItem
-PlayerInventory &Player::getInventory() const { return *direct_access<PlayerInventory *>(this, 3040); }
+PlayerInventory &Player::getInventory() const { return *direct_access<PlayerInventory *>(this, 3208); }
 
 // Player::Player
-Certificate &Player::getCertificate() const { return *direct_access<class Certificate *>(this, 2848); }
+Certificate &Player::getCertificate() const { return *direct_access<class Certificate *>(this, 3016); }
 
 // ServerPlayer::ServerPlayer
 NetworkIdentifier const &Player::getNetworkIdentifier() const {
-  return direct_access<class NetworkIdentifier const>(this, 2544);
+  return direct_access<class NetworkIdentifier const>(this, 2712);
 }
 // AddPlayerPacket::AddPlayerPacket
-std::string &Player::getDeviceId() const { return direct_access<std::string>(this, 8088); }
+std::string &Player::getDeviceId() const { return direct_access<std::string>(this, 8352); }
 
 // ServerNetworkHandler::_createNewPlayer
-std::string &Player::getClientPlatformId() const { return direct_access<std::string>(this, 2856); }
+std::string &Player::getClientPlatformId() const { return direct_access<std::string>(this, 3024); }
 
 // ServerNetworkHandler::_createNewPlayer
-std::string &Player::getPlatformOfflineId() const { return direct_access<std::string>(this, 2792); }
+std::string &Player::getPlatformOfflineId() const { return direct_access<std::string>(this, 2960); }
 
 // Player::getPlatformOnlineId
-std::string &Player::getClientPlatformOnlineId() const { return direct_access<std::string>(this, 3672); }
+std::string &Player::getClientPlatformOnlineId() const { return direct_access<std::string>(this, 3856); }
 
 
 #pragma endregion
@@ -73,7 +73,7 @@ uint64_t Level::GetServerTick() {
 }
 
 // RaidBossComponent::_sendBossEvent
-PacketSender &Level::getPacketSender() const { return *direct_access<PacketSender *>(this, 2336); }
+PacketSender &Level::getPacketSender() const { return *direct_access<PacketSender *>(this, 2384); }
 
 // ServerLevel::initialize
 LevelDataWrapper &Level::GetLevelDataWrapper() { return direct_access<LevelDataWrapper>(this, 576); }
@@ -92,7 +92,7 @@ template <> NetworkHandler *LocateService<NetworkHandler>() {
 
 template <> MinecraftCommands *LocateService<MinecraftCommands>() { return LocateService<Minecraft>()->getCommands(); }
 
-MinecraftCommands *Minecraft::getCommands() { return direct_access<MinecraftCommands *>(this, 160); }
+MinecraftCommands *Minecraft::getCommands() { return direct_access<MinecraftCommands *>(this, 176); }
 
 // Item::allowOffhand
 bool Item::getAllowOffhand() const { return direct_access<char>(this, 290) & 0x40; }

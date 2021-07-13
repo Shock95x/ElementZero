@@ -20,9 +20,9 @@ public:
   virtual void
   addParticle(enum ParticleType, class Vec3 const &, class Vec3 const &, int, class CompoundTag const *, bool);
   virtual void sendServerLegacyParticle(enum ParticleType, class Vec3 const &, class Vec3 const &, int);
-  virtual void addParticleEffect(class HashedStrubg const &, class Vec3 const &, class MolangVariableMap const &);
+  virtual void addParticleEffect(class HashedString const &, class Vec3 const &, class MolangVariableMap const &);
   virtual void addParticleEffect(
-      class HashedStrubg const &, class Actor const &, class HashedStrubg const &, class Vec3 const &,
+      class HashedString const &, class Actor const &, class HashedStrubg const &, class Vec3 const &,
       class MolangVariableMap const &);
   virtual void
   addTerrainParticleEffect(class BlockPos const &, class Block const &, class Vec3 const &, float, float, float);

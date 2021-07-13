@@ -20,4 +20,4 @@ public:
   }
 };
 
-static_assert(offsetof(AnimatedImageData, frame) == 40);
+static_assert(offsetof(AnimatedImageData, frame) == 48);

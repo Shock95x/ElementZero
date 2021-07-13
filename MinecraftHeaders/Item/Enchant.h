@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+#include "../Core/HashedString.h"
 #include "../Core/Util.h"
 #include "../Core/NBT.h"
 #include "../dll.h"
@@ -61,7 +62,7 @@ public:
   Slot secondarySlot{};
   int compatibility{};
   std::string description;
-  Util::HashString stringId;
+  HashedString stringId;
   bool experimental{};
   bool disabled{};
 

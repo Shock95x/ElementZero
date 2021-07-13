@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 
+#include "../Core/HashedString.h"
 #include "../Core/json.h"
 #include "../dll.h"
 
@@ -126,6 +127,8 @@ public:
   _useOn(class ItemInstance &, class Actor &, class BlockPos, unsigned char, float, float, float) const;
   virtual bool _useOn(class ItemStack &, class Actor &, class BlockPos, unsigned char, float, float, float) const;
 
+  MCAPI short getId(void) const;
+  MCAPI std::string const & getFullItemName(void) const;
   MCAPI class Item &setAllowOffhand(bool);
   MCAPI class Item &setIsMirroredArt(bool);
   MCAPI bool initServer(class Json::Value &);
@@ -138,9 +141,7 @@ public:
 
   BASEAPI bool getAllowOffhand() const;
   DEF_FIELD_RW(bool, AllowOffhand);
-  BUILD_ACCESS(short, Id, 122);
-  BUILD_ACCESS(std::string, RawNameId, 160);
-  BUILD_ACCESS(class HashedString *, FullItemName, 240);
+  BUILD_ACCESS(class HashedString, RawNameId, 160);
   BUILD_ACCESS(class BlockLegacy *, LegacyBlock, 408);
   BUILD_ACCESS(enum CreativeItemCategory, CreativeCategory, 416);
   BUILD_ACCESS(class SeedItemComponentLegacy *, Seed, 60);

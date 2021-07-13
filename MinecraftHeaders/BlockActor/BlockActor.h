@@ -6,11 +6,15 @@
 
 #include "../Math/Vec3.h"
 #include "../dll.h"
+#include "BlockActorType.h"
 
 #include <modutils.h>
 
 class BlockActor {
   char unknown[200];
+
+private:
+    MCAPI static std::map<std::string, BlockActorType, std::less<std::string>> const mIdClassMap;
 
 public:
   BUILD_ACCESS_MUT(class Block, Block, 16);
@@ -30,7 +34,6 @@ public:
   virtual void loadBlockData(class CompoundTag const &, class BlockSource &, class DataLoadHelper &);
   virtual void onCustomTagLoadDone(class BlockSource &);
   virtual void tick(class BlockSource &);
-  virtual bool isFinished();
   virtual void onChanged(class BlockSource &);
   virtual bool isMovable(class BlockSource &);
   virtual bool isCustomNameSaved();
@@ -56,6 +59,10 @@ public:
   virtual float getDeletionDelayTimeSeconds() const;
   virtual void onChunkLoaded(class LevelChunk &);
   virtual void onChunkUnloaded(class LevelChunk &);
+
+  static std::map<std::string, BlockActorType, std::less<std::string>> getIdMap() {
+      return mIdClassMap;
+  }
 
 protected:
   virtual void _onUpdatePacket(class CompoundTag const &, class BlockSource &);
