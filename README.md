@@ -2,6 +2,7 @@
 <img src="https://ipfs.io/ipfs/QmYiuQE7WUeawAMTvQf9RUC7wWXb2b1wCFddVBpt6U7e1S/logo.png" width="256px" height="256px" />
 </h1>
 
+<a href="https://discord.gg/RFqct54xjn">![Discord](https://img.shields.io/badge/Chat-On%20Discord-738BD7.svg?style=for-the-badge)</a>
 <a href="https://github.com/Shock95x/ElementZero/actions">![status](https://img.shields.io/github/workflow/status/Shock95x/ElementZero/CI?style=for-the-badge)</a>
 ![platform](https://img.shields.io/badge/platform-win--x64%20%7C%20wine--linux--x64-green?style=for-the-badge)
 <a href="https://t.me/ezloader">![Telegram](https://img.shields.io/badge/telegram-ezloader-%232CA5E0?style=for-the-badge&logo=Telegram)</a><br>
