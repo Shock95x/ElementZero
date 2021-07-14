@@ -84,10 +84,10 @@ public:
       return;
     }
     auto pos = it->target->getPos();
-    auto &dim = it->target->getDimension();
+    auto dim = it->target->getDimensionId();
     pos.y -= 1;
     auto source = it->source;
-    source->teleport(pos, {0}, dim.DimensionId);
+    source->teleport(pos, {0}, dim);
     ClearTimeOut(it->token);
     container.get<1>().erase(it);
     output.success("commands.tpaccept.success", {source});

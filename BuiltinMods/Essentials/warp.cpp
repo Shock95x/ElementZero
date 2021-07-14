@@ -262,9 +262,9 @@ public:
     }
     switch (action) {
     case Action::Set: {
-      auto &dim = ent.player->getDimension();
+      auto dim = ent.player->getDimensionId().value;
       auto pos = ent.player->getPos();
-      auto err = sys.SetWarp(ent.uuid, {name, false, dim.DimensionId.value, pos});
+      auto err = sys.SetWarp(ent.uuid, {name, false, dim, pos});
       if (err) {
         output.error("commands.warp.error.disallow", {name, *err});
       } else {
@@ -414,9 +414,9 @@ public:
     auto ent = *pent;
     switch (setOrDel) {
     case SetOrDel::set: {
-      auto &dim = ent.player->getDimension();
+      auto dim = ent.player->getDimensionId().value;
       auto pos = ent.player->getPos();
-      sys.SetGlobalWarp({name, true, dim.DimensionId.value, pos});
+      sys.SetGlobalWarp({name, true, dim, pos});
       output.success("commands.warp.success.set", {name, pos});
     } break;
     case SetOrDel::del: {
