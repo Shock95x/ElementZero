@@ -20,8 +20,10 @@ static struct Settings {
     }
   } command;
 
+  bool transactionLog = false;
+
   template <typename IO> static inline bool io(IO f, Settings &settings, YAML::Node &node) {
-    return f(settings.command, node["command"]);
+    return f(settings.command, node["command"]) && f(settings.transactionLog, node["transaction-log"]);
   }
 } settings;
 
@@ -29,6 +31,14 @@ DEFAULT_SETTINGS(settings);
 
 void dllenter() {}
 void dllexit() {}
+
+THook(void, "?log@ItemTransactionLogger@@YAXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z", std::string log) {
+    if(settings.transactionLog) {
+        DEF_LOGGER("ItemTransaction");
+        LOGV(log.c_str());
+    }
+    original(log);
+}
 
 TInstanceHook(
     void, "?registerOverloadInternal@CommandRegistry@@AEAAXAEAUSignature@1@AEAUOverload@1@@Z", CommandRegistry,
