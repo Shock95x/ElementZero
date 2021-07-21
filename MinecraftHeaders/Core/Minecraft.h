@@ -12,7 +12,7 @@ class MinecraftCommands;
 class Minecraft {
 public:
     MCAPI Level *getLevel() const;
+    MCAPI MinecraftCommands & getCommands();
     MCAPI NetworkHandler &getNetworkHandler();
     MCAPI ServerNetworkHandler *getServerNetworkHandler();
-    BASEAPI MinecraftCommands *getCommands();
 };

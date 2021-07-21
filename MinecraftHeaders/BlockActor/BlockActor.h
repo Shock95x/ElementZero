@@ -26,6 +26,7 @@ public:
   BUILD_ACCESS_MUT(bool, Movable, 165);
 
   MCAPI BlockActor(enum BlockActorType, class BlockPos const &, std::string const &);
+
   virtual ~BlockActor();
   virtual void load(class Level &, class CompoundTag const &, class DataLoadHelper &);
   virtual bool save(class CompoundTag &) const;
@@ -59,12 +60,15 @@ public:
   virtual float getDeletionDelayTimeSeconds() const;
   virtual void onChunkLoaded(class LevelChunk &);
   virtual void onChunkUnloaded(class LevelChunk &);
+  virtual void fixupOnLoad(class LevelChunk &);
+
 
   static std::map<std::string, BlockActorType, std::less<std::string>> getIdMap() {
       return mIdClassMap;
   }
 
 protected:
+  virtual std::unique_ptr<class BlockActorDataPacket> _getUpdatePacket(class BlockSource &);
   virtual void _onUpdatePacket(class CompoundTag const &, class BlockSource &);
   virtual bool _playerCanUpdate(class Player const &) const;
 };

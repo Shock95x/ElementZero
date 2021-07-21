@@ -134,10 +134,11 @@ public:
   InventoryTransaction data;
 
   inline virtual ~ComplexInventoryTransaction() {}
-  MCAPI virtual void read(ReadOnlyBinaryStream &);
-  MCAPI virtual void write(BinaryStream &) const;
-  MCAPI virtual InventoryTransactionError handle(Player &, bool) const;
-  MCAPI virtual void onTransactionError(Player &, InventoryTransactionError) const;
+  virtual void read(ReadOnlyBinaryStream &);
+  virtual void write(BinaryStream &) const;
+  virtual void postLoadItems(class BlockPalette &, bool) const;
+  virtual InventoryTransactionError handle(Player &, bool) const;
+  virtual void onTransactionError(Player &, InventoryTransactionError) const;
 };
 
 //static_assert(sizeof(ComplexInventoryTransaction) == 104);
@@ -153,10 +154,11 @@ public:
   Vec3 playerPos, clickPos;
 
   inline virtual ~ItemUseInventoryTransaction() {}
-  MCAPI virtual void read(ReadOnlyBinaryStream &);
-  MCAPI virtual void write(BinaryStream &) const;
-  MCAPI virtual InventoryTransactionError handle(Player &, bool) const;
-  MCAPI virtual void onTransactionError(Player &, InventoryTransactionError) const;
+  virtual void read(ReadOnlyBinaryStream &);
+  virtual void write(BinaryStream &) const;
+  virtual void postLoadItems(class BlockPalette &, bool) const;
+  virtual InventoryTransactionError handle(Player &, bool) const;
+  virtual void onTransactionError(Player &, InventoryTransactionError) const;
 
   MCAPI void resendBlocksAroundArea(Player &, BlockPos const &, unsigned char face) const;
 };
@@ -176,10 +178,11 @@ public:
   Vec3 playerPos, clickPos;
 
   inline virtual ~ItemUseOnActorInventoryTransaction() {}
-  MCAPI virtual void read(ReadOnlyBinaryStream &);
-  MCAPI virtual void write(BinaryStream &) const;
-  MCAPI virtual InventoryTransactionError handle(Player &, bool) const;
-  MCAPI virtual void onTransactionError(Player &, InventoryTransactionError) const;
+  virtual void read(ReadOnlyBinaryStream &);
+  virtual void write(BinaryStream &) const;
+  virtual void postLoadItems(class BlockPalette &, bool) const;
+  virtual InventoryTransactionError handle(Player &, bool) const;
+  virtual void onTransactionError(Player &, InventoryTransactionError) const;
 };
 
 static_assert(offsetof(ItemUseOnActorInventoryTransaction, playerPos) == 248);
@@ -193,10 +196,11 @@ public:
   Vec3 playerPos;
 
   inline virtual ~ItemReleaseInventoryTransaction() {}
-  MCAPI virtual void read(ReadOnlyBinaryStream &);
-  MCAPI virtual void write(BinaryStream &) const;
-  MCAPI virtual InventoryTransactionError handle(Player &, bool) const;
-  MCAPI virtual void onTransactionError(Player &, InventoryTransactionError) const;
+  virtual void read(ReadOnlyBinaryStream &);
+  virtual void write(BinaryStream &) const;
+  virtual void postLoadItems(class BlockPalette &, bool) const;
+  virtual InventoryTransactionError handle(Player &, bool) const;
+  virtual void onTransactionError(Player &, InventoryTransactionError) const;
 };
 
 static_assert(offsetof(ItemReleaseInventoryTransaction, playerPos) == 240);

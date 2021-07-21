@@ -5,14 +5,15 @@
 class Inventory : public FillingContainer {
 public:
   Inventory(Player *);
-  MCAPI virtual void init() override;
-  MCAPI virtual bool add(ItemStack &) override;
-  MCAPI virtual bool canAdd(ItemStack const &) const override;
-  MCAPI virtual int getEmptySlotsCount() const override;
-  MCAPI virtual int getFirstEmptySlot() const;
-  MCAPI virtual void setContainerSize(int);
+  virtual ~Inventory();
+  virtual void init() override;
+  virtual void setItem(int, class ItemStack const &) override;
+  virtual bool add(ItemStack &) override;
+  virtual bool canAdd(ItemStack const &) const override;
+  virtual int getEmptySlotsCount() const override;
+  virtual int getFirstEmptySlot() const;
+  virtual void setContainerSize(int);
   MCAPI void tick();
-  //MCAPI virtual void dropAll(bool) override;
 
 private:
   MCAPI void setupDefault();

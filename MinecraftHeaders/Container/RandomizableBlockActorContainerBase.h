@@ -6,6 +6,10 @@ class RandomizableBlockActorContainerBase : public BlockActor {
 public:
     std::string lootTable;
     int lootTableSeed;
+
+    virtual ~RandomizableBlockActorContainerBase(void);
+    virtual void load(class Level &,class CompoundTag const &, class DataLoadHelper &) override;
+    virtual bool save(class CompoundTag &) const override;
 };
 
 static_assert(offsetof(RandomizableBlockActorContainerBase, lootTable) == 208);

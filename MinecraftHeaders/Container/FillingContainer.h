@@ -15,21 +15,24 @@ public:
 
     MCAPI FillingContainer(Player *, int, ContainerType);
 
-    MCAPI virtual bool add(ItemStack &);
-    MCAPI virtual bool canAdd(ItemStack const &) const;
+    virtual ~FillingContainer();
 
-    MCAPI virtual void clearSlot(int);
-    MCAPI virtual int clearInventory(int);
-    MCAPI virtual void load(ListTag const &, SemVersion const &, Level &);
-    MCAPI virtual int getEmptySlotsCount() const;
+    virtual void serverInitItemStackIds(int, int, std::function<void(int, class ItemStack const &)>) override;
+    virtual ItemStack const &getItem(int) const override;
+    virtual void setItem(int, ItemStack const &) override;
+    virtual void setItemWithForceBalance(int, class ItemStack const &, bool) override;
+    virtual void removeItem(int, int) override;
+    virtual int getContainerSize() const override;
+    virtual int getMaxStackSize() const override;
+    virtual void startOpen(Player &) override;
+    virtual void stopOpen(Player &) override;
 
-    MCAPI virtual ItemStack const &getItem(int) const override;
-    MCAPI virtual void setItem(int, ItemStack const &) override;
-    MCAPI virtual int getContainerSize() const override;
-    MCAPI virtual int getMaxStackSize() const override;
-    MCAPI virtual void startOpen(Player &) override;
-    MCAPI virtual void stopOpen(Player &) override;
-    MCAPI virtual void serverInitItemStackIds(int, int, std::function<void(int, class ItemStack const &)>) override;
+    virtual bool add(ItemStack &);
+    virtual bool canAdd(ItemStack const &) const;
+    virtual void clearSlot(int);
+    virtual int clearInventory(int);
+    virtual void load(ListTag const &, SemVersion const &, Level &);
+    virtual int getEmptySlotsCount() const;
 
     MCAPI std::unique_ptr<ListTag> save();
 };

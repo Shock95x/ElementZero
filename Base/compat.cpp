@@ -29,8 +29,8 @@ SynchedActorData &Actor::getEntityData() const { return direct_access<SynchedAct
 SimpleContainer &Actor::getEquipmentContainer() const { return direct_access<SimpleContainer>(this, 1648); }
 
 // Player::Player
-class EnderChestContainer *Player::getEnderChestContainer() const {
-    return direct_access<class EnderChestContainer *>(this, 4176);
+class EnderChestContainer * Player::getEnderChestContainer() const {
+    return direct_access<std::unique_ptr<class EnderChestContainer>>(this, 4360).get();
 }
 
 // Player::getSelectedItem
@@ -64,7 +64,7 @@ void NetworkIdentifier::kick(std::string const &reason) const {
 
 void Player::kick() { LocateService<ServerNetworkHandler>()->forceDisconnectClient(this, true); }
 
-std::string &ServerNetworkHandler::GetMotd() { return direct_access<std::string>(this, 600); }
+std::string &ServerNetworkHandler::GetMotd() { return direct_access<std::string>(this, 608); }
 
 void CommandOutput::success() { direct_access<bool>(this, 40) = true; }
 
@@ -73,10 +73,10 @@ uint64_t Level::GetServerTick() {
 }
 
 // RaidBossComponent::_sendBossEvent
-PacketSender &Level::getPacketSender() const { return *direct_access<PacketSender *>(this, 2384); }
+PacketSender &Level::getPacketSender() const { return *direct_access<PacketSender *>(this, 2400); }
 
 // ServerLevel::initialize
-LevelDataWrapper &Level::GetLevelDataWrapper() { return direct_access<LevelDataWrapper>(this, 576); }
+LevelDataWrapper &Level::GetLevelDataWrapper() { return direct_access<LevelDataWrapper>(this, 584); }
 
 template <> Minecraft *LocateService<Minecraft>() {
   return *GetServerSymbol<Minecraft *>("?mGame@ServerCommand@@1PEAVMinecraft@@EA");
@@ -90,9 +90,9 @@ template <> NetworkHandler *LocateService<NetworkHandler>() {
     return &LocateService<Minecraft>()->getNetworkHandler();
 }
 
-template <> MinecraftCommands *LocateService<MinecraftCommands>() { return LocateService<Minecraft>()->getCommands(); }
+template <> MinecraftCommands *LocateService<MinecraftCommands>() { return &LocateService<Minecraft>()->getCommands(); }
 
-MinecraftCommands *Minecraft::getCommands() { return direct_access<MinecraftCommands *>(this, 176); }
+// MinecraftCommands *Minecraft::getCommands() { return direct_access<MinecraftCommands *>(this, 176); }
 
 // Item::allowOffhand
 bool Item::getAllowOffhand() const { return direct_access<char>(this, 290) & 0x40; }

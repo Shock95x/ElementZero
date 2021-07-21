@@ -109,11 +109,10 @@ void static logChat(Mod::PlayerEntry const &entry, std::string const &content) {
     stmt.exec();
 }
 
-TClasslessInstanceHook(
-    void, "?_displayGameMessage@ServerNetworkHandler@@AEAAXAEBVPlayer@@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z",
-    Player *player, std::string &content) try {
-
+TClasslessInstanceHook(void, "?_displayGameMessage@ServerNetworkHandler@@AEAAXAEBVPlayer@@AEAUChatEvent@@@Z", Player *player, void* event) try {
     DEF_LOGGER("CHAT");
+
+    auto content = direct_access<std::string>(event, 0);
 
     auto &playerdb = Mod::PlayerDatabase::GetInstance().GetData();
     auto it        = playerdb.find(player);
