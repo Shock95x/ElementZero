@@ -12,4 +12,6 @@ if(NOT json_POPULATED)
   add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif()
 
-def_mod (LandManager LINK CommandSupport Audit Economy nlohmann_json::nlohmann_json)
+target_link_libraries(foo PRIVATE nlohmann_json::nlohmann_json)
+
+def_mod (LandManager LINK CommandSupport Audit Economy)
